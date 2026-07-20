@@ -575,6 +575,12 @@ img {
   position: relative;
   width: 100%;
   aspect-ratio: 21 / 9;
+  /* Caps how tall the banner gets on wide desktop screens (where the 21:9
+     width-driven height can push the "Đặt lịch ngay" bar below the fold)
+     without affecting mobile, where the aspect-ratio height is already well
+     under this cap. The blurred backdrop absorbs any extra letterboxing
+     this introduces. */
+  max-height: min(62vh, 650px);
   overflow: hidden;
   background-color: var(--secondary-light);
 }
@@ -614,7 +620,7 @@ img {
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: fill; /* fill the box without cropping, so the baked-in text/logo is never cut off */
 }
 
 /* Soft bottom scrim so the dots stay legible over any slide */
