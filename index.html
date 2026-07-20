@@ -137,20 +137,15 @@
          the same headline visually, so this heading is kept off-screen. -->
     <h1 class="sr-only">Phòng Khám Da Liễu Bác Sĩ Tân | Chăm Sóc Da Chuẩn Y Khoa</h1>
 
-    <!-- Full-bleed slider with the 2 real marketing banners (different
-         native aspect ratios - see .hero-slide-img object-fit:contain).
-         Each slide has a blurred .hero-slide-backdrop copy of the same
-         image behind it so the box is always filled edge-to-edge with no
-         empty letterbox gap - when swapping in a new banner, update BOTH
-         the <img src> and the backdrop's background-image to match. -->
+    <!-- Full-bleed slider. script.js sizes .hero-slider to each active
+         image's own natural ratio (object-fit:contain, so content is NEVER
+         cropped) - works for any future banner regardless of its size. -->
     <div class="hero-slider reveal reveal-fade-up" id="hero-slider">
       <div class="hero-slide is-active">
-        <div class="hero-slide-backdrop" style="background-image: url('assets/banner.png');"></div>
-        <img src="assets/key-visual-2.png" alt="Phòng Khám Da Liễu Bác Sĩ Tân - Làn da khỏe đẹp, tự tin tỏa sáng. Tư vấn thật, làm thật, hiệu quả thật. Laser thẩm mỹ, khám chữa bệnh da liễu, tiêm Botox, chăm sóc da." class="hero-slide-img" width="1672" height="941" fetchpriority="high">
+        <img src="assets/banner.png" alt="Phòng Khám Da Liễu Bác Sĩ Tân - Làn da khỏe đẹp, tự tin tỏa sáng. Tư vấn thật, làm thật, hiệu quả thật. Laser thẩm mỹ, khám chữa bệnh da liễu, tiêm Botox, chăm sóc da." class="hero-slide-img" width="1915" height="821" fetchpriority="high">
       </div>
       <div class="hero-slide">
-        <div class="hero-slide-backdrop" style="background-image: url('assets/banner2.jpg');"></div>
-        <img src="assets/banner2.jpg" alt="Phòng Khám Da Liễu Bác Sĩ Tân - Làn da khỏe đẹp, tự tin tỏa sáng. Chăm sóc và điều trị da chuyên sâu: Chăm sóc da, Khám chữa bệnh da liễu, Tiêm Botox, Laser thẩm mỹ." class="hero-slide-img" width="1676" height="624" loading="lazy">
+        <img src="assets/banner2.png" alt="Phòng Khám Da Liễu Bác Sĩ Tân - Làn da khỏe đẹp, tự tin tỏa sáng. Chăm sóc và điều trị da chuyên sâu: Chăm sóc da, Khám chữa bệnh da liễu, Tiêm Botox, Laser thẩm mỹ." class="hero-slide-img" width="1915" height="821" loading="lazy">
       </div>
 
       <button type="button" class="hero-slider-arrow hero-slider-prev" id="hero-slider-prev" aria-label="Ảnh trước">

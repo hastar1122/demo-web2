@@ -575,12 +575,6 @@ img {
   position: relative;
   width: 100%;
   aspect-ratio: 21 / 9;
-  /* Caps how tall the banner gets on wide desktop screens (where the 21:9
-     width-driven height can push the "Đặt lịch ngay" bar below the fold)
-     without affecting mobile, where the aspect-ratio height is already well
-     under this cap. The blurred backdrop absorbs any extra letterboxing
-     this introduces. */
-  max-height: min(62vh, 650px);
   overflow: hidden;
   background-color: var(--secondary-light);
 }
