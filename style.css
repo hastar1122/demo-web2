@@ -4,7 +4,7 @@
    ========================================================================== */
 
 /* Google Fonts Import */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 /* CSS Variables */
 :root {
@@ -80,7 +80,7 @@ a, button, input, select, textarea {
 
 /* Typography */
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   font-weight: 600;
   line-height: 1.25;
   color: var(--text-primary);
@@ -324,7 +324,7 @@ img {
 }
 
 .logo-wordmark-line1 {
-  font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   font-weight: 700;
   font-size: 1.05rem;
   color: var(--primary);
@@ -332,7 +332,7 @@ img {
 }
 
 .logo-wordmark-line2 {
-  font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   font-weight: 800;
   font-size: 1.35rem;
   color: var(--secondary);
@@ -341,7 +341,7 @@ img {
 }
 
 .logo-text {
-  font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   font-weight: 700;
   font-size: 1.3rem;
   color: var(--primary);
@@ -542,205 +542,171 @@ img {
 /* ==========================================================================
    Hero Banner Section
    ========================================================================== */
+
+/* Visually hidden but still readable by search engines/screen readers -
+   used for the real H1 since the banner image itself carries the headline. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .hero-section {
   position: relative;
-  padding: calc(var(--header-height) + 2.5rem) 0 4rem;
+  padding-top: var(--header-height);
   background: var(--bg-primary);
-  overflow: hidden;
 }
 
-/* Full-bleed banner background - the portrait sits on the left, the rest of
-   the image is a soft green gradient that the text/booking card float on
-   top of, matching the reference layout. */
-.hero-bg {
+/* Full-bleed slider. The two real banners have different native aspect
+   ratios (banner.png ~16:9, banner2.jpg ~2.7:1) and both carry critical
+   baked-in logo/headline text right to their edges, so object-fit:contain
+   is used instead of cover - this guarantees neither is ever cropped, at
+   the cost of small letterbox bars on whichever slide doesn't match the
+   box ratio exactly. The aspect-ratio below is a middle ground between
+   the two so the letterboxing stays modest on both. */
+.hero-slider {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 21 / 9;
+  overflow: hidden;
+  background-color: var(--secondary-light);
+}
+
+.hero-slide {
   position: absolute;
   inset: 0;
-  z-index: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.8s ease;
 }
 
-.hero-bg-img {
+.hero-slide.is-active {
+  opacity: 1;
+  visibility: visible;
+  z-index: 1;
+}
+
+.hero-slide-img {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: left center;
 }
 
-.hero-bg::after {
+/* Soft bottom scrim so the dots stay legible over any slide */
+.hero-slider::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 70%, var(--bg-primary) 100%);
-}
-
-.hero-container {
-  display: grid;
-  grid-template-columns: 0.8fr 1.2fr 0.95fr;
-  gap: 2rem;
-  align-items: stretch;
-  position: relative;
+  background: linear-gradient(to top, rgba(15, 23, 42, 0.35) 0%, rgba(15, 23, 42, 0) 16%);
   z-index: 2;
-}
-
-.hero-container > * {
-  min-width: 0; /* Allow grid children to shrink below their content's min-content width */
-}
-
-.hero-content,
-.hero-card-wrapper {
-  align-self: start;
-}
-
-/* Reserves space over the portrait in the banner background so the text
-   column doesn't overlap her face. */
-.hero-visual-spacer {
   pointer-events: none;
 }
 
-/* Icon feature row, inline within the content column (between the
-   description and the highlight chips/CTAs). Rendered as small elevated
-   cards so they read as a distinct, polished module rather than bare
-   icons floating on the banner background. */
-.hero-visual-features {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0.75rem;
-  margin-bottom: 1.5rem;
+.hero-slider-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.85);
+  color: var(--text-primary);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--shadow-md);
+  transition: var(--transition-fast);
 }
 
-.hero-visual-feature-item {
+.hero-slider-arrow:hover {
+  background-color: var(--bg-primary);
+  color: var(--primary);
+  transform: translateY(-50%) scale(1.08);
+}
+
+.hero-slider-prev { left: 1rem; }
+.hero-slider-next { right: 1rem; }
+
+.hero-slider-dots {
+  position: absolute;
+  left: 50%;
+  bottom: 2.5%;
+  transform: translateX(-50%);
+  z-index: 3;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.hero-slider-dot {
+  width: 9px;
+  height: 9px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.55);
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.hero-slider-dot.is-active {
+  width: 22px;
+  border-radius: 5px;
+  background-color: var(--bg-primary);
+}
+
+/* CTA strip directly under the banner slider - kept light so it doesn't
+   visually merge into the dark green Stats section right below it. */
+.hero-cta-bar {
+  background-color: var(--bg-primary);
+  border-bottom: 1px solid var(--border);
+}
+
+.hero-cta-bar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  padding: 1.5rem;
+}
+
+.hero-cta-bar-text {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 0.65rem;
-  text-align: center;
-  padding: 1rem 0.5rem;
-  background-color: var(--bg-primary);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-sm);
-  transition: var(--transition-normal);
+  gap: 0.15rem;
 }
 
-.hero-visual-feature-item:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-md);
-  border-color: rgba(21, 128, 61, 0.3);
-}
-
-.hero-visual-feature-icon {
-  width: 54px;
-  height: 54px;
-  border-radius: var(--radius-round);
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
-  color: var(--bg-primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 8px 16px -6px rgba(21, 128, 61, 0.45);
-  transition: var(--transition-normal);
-}
-
-.hero-visual-feature-item:hover .hero-visual-feature-icon {
-  transform: scale(1.08);
-}
-
-.hero-visual-feature-item span:last-child {
-  font-size: 0.75rem;
-  font-weight: 600;
-  line-height: 1.3;
-  color: var(--text-primary);
-}
-
-.hero-content {
-  max-width: 560px;
-}
-
-.hero-content h1 {
-  line-height: 1.1;
-  margin-bottom: 1rem;
-  letter-spacing: -0.01em;
-}
-
-.hero-content h1 span {
+.hero-cta-bar-text strong {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
   color: var(--primary);
-  display: inline;
 }
 
-.hero-content h1 .text-gold {
-  color: var(--secondary);
-}
-
-.hero-description {
-  font-size: 1.05rem;
-  line-height: 1.7;
+.hero-cta-bar-text span {
+  font-size: 0.9rem;
   color: var(--text-secondary);
-  margin-bottom: 1.75rem;
-}
-
-/* Highlighted Services Row (checkmark chips) */
-.hero-highlights {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.65rem;
-  margin-bottom: 2.25rem;
-}
-
-.hero-highlight-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.4rem 1rem 0.4rem 0.4rem;
-  background-color: var(--bg-primary);
-  border: 1px solid var(--border);
-  border-radius: 100px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  box-shadow: var(--shadow-sm);
-  transition: var(--transition-normal);
-}
-
-.hero-highlight-chip:hover {
-  border-color: var(--primary);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-}
-
-.hero-highlight-chip .chip-check {
-  width: 22px;
-  height: 22px;
-  flex-shrink: 0;
-  border-radius: 50%;
-  background-color: var(--primary);
-  color: var(--bg-primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.hero-highlight-chip .chip-check svg {
-  width: 12px;
-  height: 12px;
-}
-
-.hero-actions {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-/* Slightly tighter horizontal padding than the default .btn-lg so the two
-   icon-bearing CTAs still fit on one line within the hero content column. */
-.hero-actions .btn {
-  padding-left: 1.75rem;
-  padding-right: 1.75rem;
 }
 
 .btn-lg {
   padding: 1.05rem 2.5rem;
   font-size: 1rem;
   border-radius: calc(var(--radius-md) + 6px);
+}
+
+.btn-sm {
+  padding: 0.6rem 1.35rem;
+  font-size: 0.85rem;
 }
 
 /* Booking Card (clean solid card) */
@@ -857,6 +823,70 @@ img {
   margin-bottom: 1.5rem;
 }
 
+/* Booking Modal - houses the booking card as a popup, opened from any
+   "Đặt lịch" / "Nhận tư vấn" trigger across the site (see script.js). */
+.booking-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  opacity: 0;
+  transition: opacity var(--transition-normal);
+}
+
+.booking-modal.is-open {
+  display: flex;
+  opacity: 1;
+}
+
+.booking-modal-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.65);
+}
+
+.booking-modal-inner {
+  position: relative;
+  width: 100%;
+  max-width: 460px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: var(--radius-lg);
+}
+
+.booking-modal-inner .booking-card {
+  margin: 0;
+}
+
+.booking-modal-close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+  transition: var(--transition-fast);
+}
+
+.booking-modal-close:hover {
+  background-color: var(--secondary-light);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
 /* ==========================================================================
    Giới thiệu Section
    ========================================================================== */
@@ -875,8 +905,9 @@ img {
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
   width: 90%;
-  aspect-ratio: 4/3;
+  aspect-ratio: 3/4;
   object-fit: cover;
+  object-position: top center;
 }
 
 .about-floating-badge {
@@ -925,8 +956,7 @@ img {
 .trust-bar-section {
   position: relative;
   z-index: 3;
-  padding: 0 0 4.5rem 0;
-  margin-top: -2.5rem;
+  padding: 4rem 0 4.5rem 0;
 }
 
 .trust-bar-grid {
@@ -1014,7 +1044,7 @@ img {
 }
 
 .stat-number {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Plus Jakarta Sans', sans-serif;
   font-size: clamp(2.5rem, 5vw, 3.75rem);
   font-weight: 800;
   line-height: 1;
@@ -1035,17 +1065,50 @@ img {
 /* ==========================================================================
    Dịch vụ Section
    ========================================================================== */
+
+/* Static full grid - used on the dedicated dich-vu.html listing page
+   (the homepage uses the draggable carousel below instead). */
 .services-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 1.75rem;
+}
+
+.services-carousel-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  padding: 1rem 0;
+}
+
+.services-carousel-track {
+  display: flex;
+  gap: 1.75rem;
+  transition: transform var(--transition-normal);
+  cursor: grab;
+}
+
+.services-carousel-track:active {
+  cursor: grabbing;
+}
+
+.services-carousel-track .service-card {
+  /* flex-basis set explicitly (not just min-width) because the card's
+     percentage-width image child otherwise confuses flexbox's automatic
+     content-based sizing and lets the card balloon to fill the track. */
+  flex: 0 0 calc(33.333% - 1.167rem);
+}
+
+.services-more-cta {
+  text-align: center;
+  margin-top: 1.5rem;
 }
 
 .service-card {
   background-color: var(--bg-primary);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  padding: 2.25rem 1.75rem;
+  overflow: hidden;
   transition: all var(--transition-normal);
   display: flex;
   flex-direction: column;
@@ -1058,28 +1121,28 @@ img {
   box-shadow: var(--shadow-lg);
 }
 
-.service-icon-box {
-  width: 72px;
-  height: 72px;
-  background: linear-gradient(135deg, var(--secondary-light) 0%, #E5F6EC 100%);
-  color: var(--primary);
-  border-radius: var(--radius-md);
+.service-image-box {
+  width: 100%;
+  aspect-ratio: 4 / 2.6;
+  overflow: hidden;
+}
+
+.service-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-slow);
+}
+
+.service-card:hover .service-image {
+  transform: scale(1.06);
+}
+
+.service-card-body {
+  padding: 1.75rem;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 1.5rem;
-  transition: all var(--transition-normal);
-}
-
-.service-icon-box svg {
-  width: 30px;
-  height: 30px;
-}
-
-.service-card:hover .service-icon-box {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
-  color: var(--bg-primary);
-  transform: scale(1.08) rotate(-4deg);
+  flex-direction: column;
+  flex-grow: 1;
 }
 
 .service-card h3 {
@@ -1098,6 +1161,14 @@ img {
   font-size: 0.95rem;
   margin-bottom: 1.5rem;
   flex-grow: 1;
+}
+
+.service-card-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem 1.25rem;
 }
 
 .service-link {
@@ -1125,127 +1196,155 @@ img {
 }
 
 /* ==========================================================================
-   Đội ngũ bác sĩ Section
+   Doctor Profile (merged into the About section - single-doctor clinic)
    ========================================================================== */
-.doctors-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
-
-.doctor-card {
-  display: grid;
-  grid-template-columns: 280px 1fr;
-  background-color: var(--bg-primary);
+.doctor-inline-profile {
+  margin: 0.25rem 0 1.75rem;
+  padding: 1.5rem 1.75rem;
+  background-color: var(--bg-secondary);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  overflow: hidden;
-  box-shadow: var(--shadow-sm);
-  transition: all var(--transition-normal);
 }
 
-.doctor-card:hover {
-  border-color: var(--primary);
-  box-shadow: var(--shadow-lg);
-  transform: translateY(-4px);
+.doctor-inline-profile h3 {
+  font-size: 1.3rem;
+  margin-bottom: 0.2rem;
 }
 
-.doctor-image-wrapper {
-  height: 100%;
-  min-height: 280px;
-  position: relative;
-  overflow: hidden;
-}
-
-.doctor-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 12%;
-  transition: transform var(--transition-slow);
-}
-
-.doctor-card:hover .doctor-img {
-  transform: scale(1.05);
-}
-
-.doctor-details {
-  padding: 2.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.doctor-meta {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 0.75rem;
-}
-
-.doctor-title {
+.doctor-inline-title {
+  display: block;
   color: var(--primary);
   font-weight: 600;
   font-size: 0.9rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  margin-bottom: 1.1rem;
 }
 
-.doctor-exp {
-  padding: 0.2rem 0.6rem;
-  background-color: var(--accent-light);
-  color: var(--accent);
-  border-radius: var(--radius-sm);
-  font-size: 0.75rem;
-  font-weight: 700;
+.doctor-credentials,
+.checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
 }
 
-.doctor-details h3 {
-  font-size: 1.5rem;
-  font-weight: 700;
+.doctor-credentials li,
+.checklist li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.doctor-credentials svg,
+.checklist svg {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  color: var(--primary);
+}
+
+/* ==========================================================================
+   Service Detail Page (dich-vu-chi-tiet.html)
+   ========================================================================== */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 2.5rem;
+}
+
+.breadcrumb a {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.breadcrumb .sep {
+  color: var(--text-light);
+}
+
+.detail-hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+  margin-bottom: 4.5rem;
+}
+
+.detail-hero-image {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+.detail-intro h2 {
   margin-bottom: 1rem;
 }
 
-.doctor-specialty {
-  font-size: 0.95rem;
-  color: var(--text-secondary);
-  margin-bottom: 1.5rem;
-  position: relative;
-  padding-left: 1.5rem;
+.detail-intro p {
+  line-height: 1.75;
 }
 
-.doctor-specialty::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 8px;
-  width: 8px;
-  height: 8px;
-  background-color: var(--primary);
-  border-radius: 50%;
+.detail-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+  margin-bottom: 4.5rem;
 }
 
-.doctor-stats {
-  display: flex;
-  gap: 2rem;
-  margin-bottom: 2rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--border);
+.detail-columns h3 {
+  margin-bottom: 1.25rem;
 }
 
-.doctor-stat {
-  display: flex;
-  flex-direction: column;
+.detail-process {
+  margin-bottom: 4.5rem;
 }
 
-.doc-stat-num {
-  font-weight: 700;
-  font-size: 1.1rem;
-  color: var(--text-primary);
+.detail-cta {
+  text-align: center;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+  border-radius: var(--radius-lg);
+  padding: 3rem 2rem;
+  color: var(--bg-primary);
+  margin-bottom: 4.5rem;
 }
 
-.doc-stat-lbl {
-  font-size: 0.75rem;
+.detail-cta h3 {
+  color: var(--bg-primary);
+  margin-bottom: 0.75rem;
+}
+
+.detail-cta p {
+  color: rgba(255, 255, 255, 0.85);
+  max-width: 500px;
+  margin: 0 auto 1.75rem;
+}
+
+/* ==========================================================================
+   Đội ngũ nhân viên Section
+   ========================================================================== */
+.employees-showcase {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.employees-image {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  margin-bottom: 1.75rem;
+}
+
+.employees-caption {
+  font-size: 1rem;
+  line-height: 1.75;
   color: var(--text-secondary);
 }
 
@@ -1293,7 +1392,7 @@ img {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Plus Jakarta Sans', sans-serif;
   font-weight: 800;
   font-size: 1.8rem;
   color: var(--primary);
@@ -1325,16 +1424,62 @@ img {
 /* ==========================================================================
    Before & After Gallery Section
    ========================================================================== */
-.ba-showcase {
-  max-width: 800px;
-  margin: 0 auto 3rem auto;
+
+/* Sidebar of treatment categories + large comparison panel */
+.ba-viewer {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.ba-viewer > * {
+  min-width: 0; /* Let grid items (esp. the horizontal-scroll mobile category row) shrink below their content's natural width instead of expanding the page */
+}
+
+.ba-category-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.ba-category-btn {
+  text-align: left;
+  padding: 0.9rem 1.25rem;
+  border-radius: var(--radius-md);
+  background-color: var(--bg-secondary);
+  border: 1px solid transparent;
+  color: var(--text-primary);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.ba-category-btn:hover {
+  background-color: var(--secondary-light);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.ba-category-btn.is-active {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+  color: var(--bg-primary);
+  box-shadow: var(--shadow-primary);
+}
+
+.ba-viewer-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 /* Interactive Slider Element */
 .ba-slider-container {
   position: relative;
   width: 100%;
-  aspect-ratio: 16/10;
+  aspect-ratio: 16/9;
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: var(--shadow-lg);
@@ -1422,106 +1567,41 @@ img {
   color: var(--bg-primary);
 }
 
-/* Grid of secondary Before/After items */
-.ba-gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
-}
-
-.ba-gallery-item {
-  background-color: var(--bg-primary);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  cursor: pointer;
-  transition: all var(--transition-normal);
-}
-
-.ba-gallery-item:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-md);
-  border-color: var(--primary);
-}
-
-.ba-gallery-thumb {
-  position: relative;
-  aspect-ratio: 4/3;
-  overflow: hidden;
-}
-
-.ba-gallery-thumb img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform var(--transition-slow);
-}
-
-.ba-gallery-item:hover .ba-gallery-thumb img {
-  transform: scale(1.05);
-}
-
-.ba-gallery-hover-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(21, 128, 61, 0.4);
-  opacity: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: opacity var(--transition-normal);
-  z-index: 2;
-}
-
-.ba-gallery-item:hover .ba-gallery-hover-overlay {
-  opacity: 1;
-}
-
-.ba-overlay-icon {
-  width: 48px;
-  height: 48px;
-  background-color: var(--bg-primary);
-  color: var(--primary);
-  border-radius: var(--radius-round);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: var(--shadow-md);
-}
-
-.ba-gallery-info {
-  padding: 1.25rem;
-}
-
-.ba-gallery-info h4 {
-  font-size: 1rem;
-  font-weight: 700;
-  margin-bottom: 0.25rem;
-}
-
-.ba-gallery-info p {
-  font-size: 0.8rem;
-  color: var(--text-secondary);
-}
-
-/* Result chip overlaid on the thumbnail - quantifies the outcome so each
-   case reads as distinct proof rather than a repeated stock photo. */
+/* Result chip overlaid on the panel - quantifies the outcome so the case
+   reads as concrete proof rather than a generic stock photo. */
 .ba-result-chip {
   position: absolute;
-  left: 0.75rem;
-  bottom: 0.75rem;
+  left: 1.25rem;
+  bottom: 1.25rem;
   z-index: 3;
   background-color: rgba(15, 23, 42, 0.72);
   color: var(--bg-primary);
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 700;
-  padding: 0.35rem 0.75rem;
+  padding: 0.4rem 0.9rem;
   border-radius: 100px;
   letter-spacing: 0.01em;
   white-space: nowrap;
+  pointer-events: none;
+}
+
+/* Customer info card under the comparison panel */
+.ba-viewer-info {
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem 1.75rem;
+}
+
+.ba-viewer-info h4 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 0.35rem;
+}
+
+.ba-viewer-info p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
 }
 
 .ba-gallery-rating {
@@ -1537,80 +1617,25 @@ img {
 }
 
 .ba-gallery-quote {
-  margin-top: 0.65rem;
-  padding-top: 0.65rem;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
   border-top: 1px dashed var(--border);
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-style: italic;
 }
 
-/* Custom Lightbox Styles */
-.lightbox {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(15, 23, 42, 0.95);
-  z-index: 2000;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: opacity var(--transition-normal);
-}
-
-.lightbox.is-open {
+.ba-drag-hint {
   display: flex;
-  opacity: 1;
-}
-
-.lightbox-content-wrapper {
-  position: relative;
-  max-width: 90%;
-  max-height: 80%;
-  display: flex;
-  flex-direction: column;
   align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  font-size: 0.8rem;
+  color: var(--text-light);
 }
 
-.lightbox-img-container {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  align-items: center;
-}
-
-.lightbox-img-box {
-  position: relative;
-  max-width: 45%;
-}
-
-.lightbox-img-box img {
-  border-radius: var(--radius-md);
-  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-  max-height: 65vh;
-  object-fit: contain;
-}
-
-.lightbox-close {
-  position: absolute;
-  top: -40px;
-  right: 0;
-  background: transparent;
-  border: none;
-  color: var(--bg-primary);
-  font-size: 2rem;
-  cursor: pointer;
-  outline: none;
-}
-
-.lightbox-title {
-  color: var(--bg-primary);
-  font-family: 'Poppins', sans-serif;
-  margin-top: 1.5rem;
-  font-size: 1.25rem;
-  text-align: center;
+.ba-drag-hint svg {
+  flex-shrink: 0;
+  color: var(--primary);
 }
 
 /* ==========================================================================
@@ -1676,9 +1701,17 @@ img {
 .review-avatar {
   width: 48px;
   height: 48px;
+  flex-shrink: 0;
   border-radius: var(--radius-round);
-  object-fit: cover;
   border: 2px solid var(--secondary-light);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+  color: var(--bg-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
 }
 
 .review-author-info h4 {
@@ -2078,7 +2111,7 @@ img {
 }
 
 .faq-question {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Plus Jakarta Sans', sans-serif;
   font-weight: 600;
   font-size: 1.05rem;
   color: var(--text-primary);
@@ -2337,6 +2370,36 @@ img {
   height: 24px;
 }
 
+/* Label that slides in on hover so each floating button is unambiguous */
+.float-tooltip {
+  position: absolute;
+  right: calc(100% + 12px);
+  top: 50%;
+  transform: translateY(-50%) translateX(8px);
+  background-color: var(--text-primary);
+  color: var(--bg-primary);
+  padding: 0.45rem 0.9rem;
+  border-radius: var(--radius-sm);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: var(--transition-fast);
+  box-shadow: var(--shadow-md);
+}
+
+.float-btn:hover .float-tooltip,
+.float-btn:focus-visible .float-tooltip {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+.float-booking {
+  background-color: var(--secondary);
+}
+
 .float-hotline {
   background-color: var(--primary);
   animation: pulse-phone 2s infinite;
@@ -2419,53 +2482,15 @@ img {
     --header-height: 70px;
   }
   
-  .hero-container {
-    grid-template-columns: 1fr;
-    gap: 2.5rem;
-  }
-
-  .hero-content {
-    text-align: center;
-    margin: 0 auto;
-    order: 1;
-  }
-
-  .hero-visual-spacer {
-    display: none;
-  }
-
-  .hero-bg-img {
-    /* Shift crop away from the portrait so the plain gradient area sits
-       behind the stacked text instead of her face. */
-    object-position: 80% center;
-  }
-
-  .hero-card-wrapper {
-    order: 3;
-  }
-
-  .hero-visual-features {
-    max-width: 460px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .hero-highlights {
-    justify-content: center;
-  }
-
-  .hero-actions {
-    justify-content: center;
-  }
-
-  .booking-card {
-    max-width: 550px;
-    margin: 0 auto;
-  }
-
   .about-container {
     grid-template-columns: 1fr;
     gap: 3rem;
+  }
+
+  .detail-hero-grid,
+  .detail-columns {
+    grid-template-columns: 1fr;
+    gap: 2rem;
   }
 
   .about-images-wrapper {
@@ -2478,12 +2503,15 @@ img {
     width: 80%;
   }
 
-  .trust-bar-section {
-    margin-top: 0;
-    padding-top: 4.5rem;
+  .trust-bar-grid {
+    grid-template-columns: 1fr 1fr;
   }
 
-  .trust-bar-grid {
+  .services-carousel-track .service-card {
+    flex-basis: calc(50% - 0.875rem);
+  }
+
+  .services-grid {
     grid-template-columns: 1fr 1fr;
   }
 
@@ -2496,10 +2524,6 @@ img {
     display: none;
   }
 
-  .doctors-grid {
-    gap: 2rem;
-  }
-
   .timeline-grid {
     grid-template-columns: 1fr 1fr;
     gap: 3rem;
@@ -2509,8 +2533,21 @@ img {
     display: none; /* Hide linear line on tablet wrap */
   }
 
-  .ba-gallery-grid {
-    grid-template-columns: 1fr 1fr;
+  .ba-viewer {
+    grid-template-columns: 1fr;
+  }
+
+  .ba-category-list {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .ba-category-btn {
+    flex: 0 0 auto;
+    white-space: nowrap;
   }
 
   .review-card {
@@ -2591,14 +2628,6 @@ img {
   .header-right .btn {
     display: none; /* Hide header booking button on tablet/mobile header */
   }
-
-  .doctor-card {
-    grid-template-columns: 1fr;
-  }
-
-  .doctor-image-wrapper {
-    height: 320px;
-  }
 }
 
 /* Mobile Devices (576px or less) */
@@ -2607,21 +2636,35 @@ img {
     display: none; /* Hide hotline from header to save space on mobile */
   }
 
-  .hero-visual-features {
-    grid-template-columns: repeat(2, 1fr);
-    max-width: 320px;
+  .hero-cta-bar-inner {
+    justify-content: center;
+    text-align: center;
+    padding: 1.25rem 1.5rem;
   }
 
-  .hero-actions {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .hero-actions .btn {
+  .hero-cta-bar-inner .btn {
     width: 100%;
   }
 
+  .hero-slider-arrow {
+    width: 34px;
+    height: 34px;
+  }
+
+  .hero-slider-arrow svg {
+    width: 16px;
+    height: 16px;
+  }
+
   .trust-bar-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .services-carousel-track .service-card {
+    flex-basis: 100%;
+  }
+
+  .services-grid {
     grid-template-columns: 1fr;
   }
 
@@ -2638,8 +2681,12 @@ img {
     grid-template-columns: 1fr;
   }
 
-  .ba-gallery-grid {
-    grid-template-columns: 1fr;
+  .ba-slider-container {
+    aspect-ratio: 4/3;
+  }
+
+  .ba-viewer-info {
+    padding: 1.25rem;
   }
 
   .review-card {
@@ -2685,13 +2732,5 @@ img {
   .float-btn {
     width: 44px;
     height: 44px;
-  }
-
-  .lightbox-img-container {
-    flex-direction: column;
-  }
-
-  .lightbox-img-box {
-    max-width: 90%;
   }
 }
