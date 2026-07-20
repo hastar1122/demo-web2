@@ -138,12 +138,18 @@
     <h1 class="sr-only">Phòng Khám Da Liễu Bác Sĩ Tân | Chăm Sóc Da Chuẩn Y Khoa</h1>
 
     <!-- Full-bleed slider with the 2 real marketing banners (different
-         native aspect ratios - see .hero-slide-img object-fit:contain). -->
+         native aspect ratios - see .hero-slide-img object-fit:contain).
+         Each slide has a blurred .hero-slide-backdrop copy of the same
+         image behind it so the box is always filled edge-to-edge with no
+         empty letterbox gap - when swapping in a new banner, update BOTH
+         the <img src> and the backdrop's background-image to match. -->
     <div class="hero-slider reveal reveal-fade-up" id="hero-slider">
       <div class="hero-slide is-active">
-        <img src="assets/banner.png" alt="Phòng Khám Da Liễu Bác Sĩ Tân - Làn da khỏe đẹp, tự tin tỏa sáng. Tư vấn thật, làm thật, hiệu quả thật. Laser thẩm mỹ, khám chữa bệnh da liễu, tiêm Botox, chăm sóc da." class="hero-slide-img" width="1672" height="941" fetchpriority="high">
+        <div class="hero-slide-backdrop" style="background-image: url('assets/banner.png');"></div>
+        <img src="assets/key-visual-2.png" alt="Phòng Khám Da Liễu Bác Sĩ Tân - Làn da khỏe đẹp, tự tin tỏa sáng. Tư vấn thật, làm thật, hiệu quả thật. Laser thẩm mỹ, khám chữa bệnh da liễu, tiêm Botox, chăm sóc da." class="hero-slide-img" width="1672" height="941" fetchpriority="high">
       </div>
       <div class="hero-slide">
+        <div class="hero-slide-backdrop" style="background-image: url('assets/banner2.jpg');"></div>
         <img src="assets/banner2.jpg" alt="Phòng Khám Da Liễu Bác Sĩ Tân - Làn da khỏe đẹp, tự tin tỏa sáng. Chăm sóc và điều trị da chuyên sâu: Chăm sóc da, Khám chữa bệnh da liễu, Tiêm Botox, Laser thẩm mỹ." class="hero-slide-img" width="1676" height="624" loading="lazy">
       </div>
 
@@ -226,7 +232,7 @@
             <p>Làm sạch sâu ổ mụn nhân, kháng viêm tầng sâu kết hợp ánh sáng sinh học giúp phục hồi cấu trúc biểu bì cấp tốc không để lại sẹo thâm.</p>
             <div class="service-card-actions">
               <a href="#booking-card" class="btn btn-primary btn-sm">Nhận tư vấn</a>
-              <a href="#booking-card" class="service-link">
+              <a href="dich-vu-chi-tiet.html?slug=dieu-tri-mun" class="service-link">
                 Xem chi tiết
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
               </a>
@@ -244,7 +250,7 @@
             <p>Tái tạo bề mặt da mịn màng, thúc đẩy tăng sinh sợi collagen giúp thu nhỏ lỗ chân lông hiệu quả bằng công nghệ hiện đại an toàn.</p>
             <div class="service-card-actions">
               <a href="#booking-card" class="btn btn-primary btn-sm">Nhận tư vấn</a>
-              <a href="#booking-card" class="service-link">
+              <a href="dich-vu-chi-tiet.html?slug=tre-hoa-da" class="service-link">
                 Xem chi tiết
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
               </a>
@@ -262,7 +268,7 @@
             <p>Ứng dụng bước sóng Laser thế hệ mới phá hủy sắc tố melanin sẫm màu dưới tế bào biểu bì, trả lại nước da trắng hồng rạng rỡ.</p>
             <div class="service-card-actions">
               <a href="#booking-card" class="btn btn-primary btn-sm">Nhận tư vấn</a>
-              <a href="#booking-card" class="service-link">
+              <a href="dich-vu-chi-tiet.html?slug=tri-nam-tan-nhang" class="service-link">
                 Xem chi tiết
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
               </a>
@@ -280,7 +286,7 @@
             <p>Cấp ẩm đa tầng sâu Hyaluronic Acid, đắp nạ bổ sung vitamin nuôi dưỡng hàng rào bảo vệ biểu bì khỏe mạnh trước gốc tự do.</p>
             <div class="service-card-actions">
               <a href="#booking-card" class="btn btn-primary btn-sm">Nhận tư vấn</a>
-              <a href="#booking-card" class="service-link">
+              <a href="dich-vu-chi-tiet.html?slug=cham-soc-da" class="service-link">
                 Xem chi tiết
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
               </a>
@@ -298,7 +304,7 @@
             <p>Sử dụng sóng siêu âm hội tụ cường độ cao tác động vào lớp cơ nông, giúp xóa nhăn, thon gọn viền hàm tức thì không nghỉ dưỡng.</p>
             <div class="service-card-actions">
               <a href="#booking-card" class="btn btn-primary btn-sm">Nhận tư vấn</a>
-              <a href="#booking-card" class="service-link">
+              <a href="dich-vu-chi-tiet.html?slug=nang-co-hifu" class="service-link">
                 Xem chi tiết
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
               </a>
@@ -316,7 +322,7 @@
             <p>Kỹ thuật tách xơ sẹo kết hợp Laser CO2 Fractional phá vỡ chân sẹo xơ cứng lâu năm, khôi phục cấu trúc collagen và làm đầy lõm sẹo.</p>
             <div class="service-card-actions">
               <a href="#booking-card" class="btn btn-primary btn-sm">Nhận tư vấn</a>
-              <a href="#booking-card" class="service-link">
+              <a href="dich-vu-chi-tiet.html?slug=seo-ro" class="service-link">
                 Xem chi tiết
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
               </a>
@@ -334,7 +340,7 @@
             <p>Ứng dụng công nghệ ánh sáng lạnh vô khuẩn giúp làm sạch gốc nang lông cơ thể, ngăn tái phát vĩnh viễn đồng thời trị thâm sần tối ưu.</p>
             <div class="service-card-actions">
               <a href="#booking-card" class="btn btn-primary btn-sm">Nhận tư vấn</a>
-              <a href="#booking-card" class="service-link">
+              <a href="dich-vu-chi-tiet.html?slug=triet-long-diode" class="service-link">
                 Xem chi tiết
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
               </a>
@@ -352,7 +358,7 @@
             <p>Thăm khám, xét nghiệm chẩn đoán chính xác nguyên nhân dị ứng. Phác đồ bôi thuốc kháng viêm an toàn không để lại di chứng.</p>
             <div class="service-card-actions">
               <a href="#booking-card" class="btn btn-primary btn-sm">Nhận tư vấn</a>
-              <a href="#booking-card" class="service-link">
+              <a href="dich-vu-chi-tiet.html?slug=viem-da-co-dia" class="service-link">
                 Xem chi tiết
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
               </a>
@@ -370,7 +376,7 @@
             <p>Tiêm botulinum toxin chuẩn liều lượng y khoa giúp thon gọn hàm, cải thiện nhăn động vùng trán, đuôi mắt tự nhiên, an toàn.</p>
             <div class="service-card-actions">
               <a href="#booking-card" class="btn btn-primary btn-sm">Nhận tư vấn</a>
-              <a href="#booking-card" class="service-link">
+              <a href="dich-vu-chi-tiet.html?slug=tiem-botox" class="service-link">
                 Xem chi tiết
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
               </a>
@@ -388,7 +394,7 @@
             <p>Kết hợp Laser tái tạo bề mặt và căng chỉ collagen sinh học giúp làm mờ nếp nhăn tĩnh, mang lại làn da căng mịn, tươi trẻ.</p>
             <div class="service-card-actions">
               <a href="#booking-card" class="btn btn-primary btn-sm">Nhận tư vấn</a>
-              <a href="#booking-card" class="service-link">
+              <a href="dich-vu-chi-tiet.html?slug=xoa-nhan" class="service-link">
                 Xem chi tiết
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
               </a>
@@ -1048,7 +1054,7 @@
                 <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
               </svg>
             </a>
-            <a href="https://zalo.me" target="_blank" class="social-btn" aria-label="Zalo">
+            <a href="https://zalo.me/0901234567" target="_blank" class="social-btn" aria-label="Zalo">
               <!-- Custom Z Letter representation SVG -->
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2.5 6.5h5v2l-3.5 3.5h3.5v1.5h-5v-2l3.5-3.5h-3.5V8.5z"/>

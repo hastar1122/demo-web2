@@ -15,7 +15,7 @@
   --secondary-light: #F0FDF4;  /* Light Green background for clean highlights */
   --accent: #EA580C;           /* Warm Orange (Accent from logo face) */
   --accent-light: #FEF3C7;     /* Soft Gold/Amber background */
-  --bg-primary: #FFFFFF;
+  --bg-primary: #FFF;
   --bg-secondary: #F8FAFC;      /* Slate 50 */
   --text-primary: #0F172A;     /* Slate 900 */
   --text-secondary: #475569;   /* Slate 600 */
@@ -60,6 +60,7 @@
 html {
   scroll-behavior: smooth;
   font-size: 16px;
+  overflow-x: hidden;
 }
 
 body {
@@ -566,14 +567,20 @@ img {
 /* Full-bleed slider. The two real banners have different native aspect
    ratios (banner.png ~16:9, banner2.jpg ~2.7:1) and both carry critical
    baked-in logo/headline text right to their edges, so object-fit:contain
-   is used instead of cover - this guarantees neither is ever cropped, at
-   the cost of small letterbox bars on whichever slide doesn't match the
-   box ratio exactly. The aspect-ratio below is a middle ground between
-   the two so the letterboxing stays modest on both. */
+   is used instead of cover - this guarantees neither is ever cropped no
+   matter what size a future replacement banner is. Any resulting letterbox
+   gap is filled by each slide's blurred .hero-slide-backdrop copy (see
+   below) instead of showing empty space. */
 .hero-slider {
   position: relative;
   width: 100%;
   aspect-ratio: 21 / 9;
+  /* Caps how tall the banner gets on wide desktop screens (where the 21:9
+     width-driven height can push the "Đặt lịch ngay" bar below the fold)
+     without affecting mobile, where the aspect-ratio height is already well
+     under this cap. The blurred backdrop absorbs any extra letterboxing
+     this introduces. */
+  max-height: min(62vh, 650px);
   overflow: hidden;
   background-color: var(--secondary-light);
 }
@@ -592,11 +599,28 @@ img {
   z-index: 1;
 }
 
+/* Blurred, scaled-up copy of the same slide image fills the box edge-to-edge
+   behind the sharp contain image below, so there's never an empty letterbox
+   gap even when a future banner's aspect ratio doesn't match the box. Scaled
+   up so the blur radius never reveals its own crop edge. */
+.hero-slide-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-size: cover;
+  background-position: center;
+  filter: blur(40px) brightness(0.92) saturate(1.1);
+  transform: scale(1.15);
+  pointer-events: none;
+}
+
 .hero-slide-img {
+  position: relative;
+  z-index: 1;
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 /* Soft bottom scrim so the dots stay legible over any slide */
@@ -770,8 +794,12 @@ img {
 
 .form-control {
   font-family: 'Inter', sans-serif;
-  font-size: 0.9rem;
+
+  /* 16px min - iOS Safari auto-zooms the page on focus for any input with a
+     smaller computed font-size, which made the modal jump/zoom on tap. */
+  font-size: 1rem;
   width: 100%;
+  min-height: 3rem;
   padding: 0.75rem 1rem 0.75rem 2.75rem;
   border-radius: var(--radius-md);
   border: 1px solid var(--border);
@@ -779,12 +807,33 @@ img {
   color: var(--text-primary);
   transition: all var(--transition-fast);
   outline: none;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 .form-control:focus {
   border-color: var(--primary);
   box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.15);
   background-color: var(--bg-primary);
+}
+
+/* Native select/date chrome ignores our padding differently across iOS/Android,
+   so give them an explicit custom chevron and matching right padding instead
+   of relying on the platform default (which looked inconsistent on iOS). */
+select.form-control {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 16px;
+  padding-right: 2.75rem;
+}
+
+input[type="date"].form-control {
+  min-height: 3rem;
+}
+
+input[type="date"].form-control::-webkit-date-and-time-value {
+  text-align: left;
 }
 
 .booking-privacy-note {
@@ -829,17 +878,18 @@ img {
   position: fixed;
   inset: 0;
   z-index: 2000;
-  display: none;
+  display: flex;
   align-items: center;
   justify-content: center;
   padding: 1.5rem;
   opacity: 0;
-  transition: opacity var(--transition-normal);
+  visibility: hidden;
+  transition: opacity var(--transition-normal), visibility var(--transition-normal);
 }
 
 .booking-modal.is-open {
-  display: flex;
   opacity: 1;
+  visibility: visible;
 }
 
 .booking-modal-overlay {
@@ -855,6 +905,12 @@ img {
   max-height: 90vh;
   overflow-y: auto;
   border-radius: var(--radius-lg);
+  transform: scale(0.94) translateY(12px);
+  transition: transform var(--transition-normal);
+}
+
+.booking-modal.is-open .booking-modal-inner {
+  transform: scale(1) translateY(0);
 }
 
 .booking-modal-inner .booking-card {
@@ -1049,7 +1105,7 @@ img {
   font-weight: 800;
   line-height: 1;
   margin-bottom: 0.5rem;
-  background: linear-gradient(to bottom, #FFFFFF 60%, rgba(255,255,255,0.7) 100%);
+  background: linear-gradient(to bottom, #FFF 60%, rgba(255,255,255,0.7) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -1086,6 +1142,8 @@ img {
   gap: 1.75rem;
   transition: transform var(--transition-normal);
   cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .services-carousel-track:active {
@@ -1117,7 +1175,7 @@ img {
 
 .service-card:hover {
   transform: translateY(-8px);
-  border-color: var(--secondary);
+  border-color: var(--primary);
   box-shadow: var(--shadow-lg);
 }
 
@@ -1132,6 +1190,7 @@ img {
   height: 100%;
   object-fit: cover;
   transition: transform var(--transition-slow);
+  -webkit-user-drag: none;
 }
 
 .service-card:hover .service-image {
@@ -1279,6 +1338,7 @@ img {
   object-fit: cover;
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
+  background-color: var(--bg-secondary);
 }
 
 .detail-intro h2 {
@@ -1653,6 +1713,8 @@ img {
   gap: 2rem;
   transition: transform var(--transition-normal);
   cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .reviews-carousel-track:active {
@@ -1673,7 +1735,7 @@ img {
 }
 
 .review-card:hover {
-  border-color: var(--secondary);
+  border-color: var(--primary);
   box-shadow: var(--shadow-lg);
 }
 
@@ -1854,7 +1916,7 @@ img {
   background:
     radial-gradient(circle at 12% 20%, rgba(21, 128, 61, 0.2) 0%, transparent 40%),
     radial-gradient(circle at 88% 0%, rgba(217, 119, 6, 0.14) 0%, transparent 38%),
-    linear-gradient(180deg, #f6fbf8 0%, #ffffff 100%);
+    linear-gradient(180deg, #f6fbf8 0%, #fff 100%);
 }
 
 .page-header-section::before,
@@ -2108,6 +2170,11 @@ img {
   align-items: center;
   cursor: pointer;
   outline: none;
+}
+
+.faq-header:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: -2px;
 }
 
 .faq-question {

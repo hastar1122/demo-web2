@@ -59,10 +59,18 @@ function initDragCarousel({ trackSelector, cardSelector, dotsSelector, gap }) {
   let currentX = 0;
   let isDraggingTrack = false;
   let originalTranslate = 0;
+  let hasDragged = false;
 
   const dragStart = (clientX) => {
     isDraggingTrack = true;
     startX = clientX;
+    // Reset currentX to the start position too - otherwise a plain tap (no
+    // touchmove/mousemove at all) left it at its stale value from the
+    // previous drag, so dragEnd computed a huge bogus diffX and treated
+    // every tap as a swipe, which is why taps on "Xem chi tiết"/"Nhận tư
+    // vấn" stopped registering as clicks.
+    currentX = clientX;
+    hasDragged = false;
     track.style.transition = 'none';
     originalTranslate = -currentIndex * (cardWidth + gap);
   };
@@ -70,6 +78,7 @@ function initDragCarousel({ trackSelector, cardSelector, dotsSelector, gap }) {
   const dragMove = (clientX) => {
     if (!isDraggingTrack) return;
     currentX = clientX;
+    if (Math.abs(currentX - startX) > 8) hasDragged = true;
     track.style.transform = `translateX(${originalTranslate + (currentX - startX)}px)`;
   };
 
@@ -79,10 +88,12 @@ function initDragCarousel({ trackSelector, cardSelector, dotsSelector, gap }) {
     track.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
 
     const diffX = currentX - startX;
-    if (diffX < -threshold && currentIndex < maxIndex()) {
-      currentIndex++;
-    } else if (diffX > threshold && currentIndex > 0) {
-      currentIndex--;
+    if (diffX < -threshold) {
+      // Swiping past the last item loops back to the first instead of
+      // stopping dead, so the carousel always feels like it keeps going.
+      currentIndex = currentIndex < maxIndex() ? currentIndex + 1 : 0;
+    } else if (diffX > threshold) {
+      currentIndex = currentIndex > 0 ? currentIndex - 1 : maxIndex();
     }
     updateSlider();
   };
@@ -94,6 +105,16 @@ function initDragCarousel({ trackSelector, cardSelector, dotsSelector, gap }) {
   track.addEventListener('touchstart', (e) => dragStart(e.touches[0].clientX));
   window.addEventListener('touchmove', (e) => dragMove(e.touches[0].clientX));
   window.addEventListener('touchend', () => dragEnd(50));
+
+  // A real drag/swipe shouldn't also fire a click on whatever link/button the
+  // pointer happens to release over; a plain tap (no meaningful movement)
+  // should pass through normally so "Xem chi tiết"/"Nhận tư vấn" still work.
+  track.addEventListener('click', (e) => {
+    if (hasDragged) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  }, true);
 
   createDots();
   window.addEventListener('resize', () => {
