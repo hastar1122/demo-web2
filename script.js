@@ -56,14 +56,22 @@ function initDragCarousel({ trackSelector, cardSelector, dotsSelector, gap }) {
   };
 
   let startX = 0;
+  let startY = 0;
   let currentX = 0;
   let isDraggingTrack = false;
   let originalTranslate = 0;
   let hasDragged = false;
+  // null = not yet decided, 'horizontal' = swiping the carousel,
+  // 'vertical' = the user is scrolling the page - carousel ignores the rest
+  // of this gesture so a vertical scroll starting on a card doesn't also
+  // yank the track sideways.
+  let dragAxis = null;
 
-  const dragStart = (clientX) => {
+  const dragStart = (clientX, clientY) => {
     isDraggingTrack = true;
+    dragAxis = null;
     startX = clientX;
+    startY = clientY;
     // Reset currentX to the start position too - otherwise a plain tap (no
     // touchmove/mousemove at all) left it at its stale value from the
     // previous drag, so dragEnd computed a huge bogus diffX and treated
@@ -75,8 +83,26 @@ function initDragCarousel({ trackSelector, cardSelector, dotsSelector, gap }) {
     originalTranslate = -currentIndex * (cardWidth + gap);
   };
 
-  const dragMove = (clientX) => {
+  const dragMove = (clientX, clientY, event) => {
     if (!isDraggingTrack) return;
+
+    if (dragAxis === null) {
+      const deltaX = clientX - startX;
+      const deltaY = clientY - startY;
+      // Wait for a clear enough movement before committing to an axis, then
+      // stick with that decision for the rest of the gesture.
+      if (Math.abs(deltaX) < 6 && Math.abs(deltaY) < 6) return;
+      dragAxis = Math.abs(deltaX) > Math.abs(deltaY) ? 'horizontal' : 'vertical';
+      if (dragAxis === 'vertical') {
+        isDraggingTrack = false;
+        return;
+      }
+    }
+
+    // Once we know it's a horizontal swipe, stop the page from also
+    // scrolling vertically while the carousel is being dragged.
+    if (event && event.cancelable) event.preventDefault();
+
     currentX = clientX;
     if (Math.abs(currentX - startX) > 8) hasDragged = true;
     track.style.transform = `translateX(${originalTranslate + (currentX - startX)}px)`;
@@ -98,12 +124,12 @@ function initDragCarousel({ trackSelector, cardSelector, dotsSelector, gap }) {
     updateSlider();
   };
 
-  track.addEventListener('mousedown', (e) => dragStart(e.clientX));
-  window.addEventListener('mousemove', (e) => dragMove(e.clientX));
+  track.addEventListener('mousedown', (e) => dragStart(e.clientX, e.clientY));
+  window.addEventListener('mousemove', (e) => dragMove(e.clientX, e.clientY));
   window.addEventListener('mouseup', () => dragEnd(100));
 
-  track.addEventListener('touchstart', (e) => dragStart(e.touches[0].clientX));
-  window.addEventListener('touchmove', (e) => dragMove(e.touches[0].clientX));
+  track.addEventListener('touchstart', (e) => dragStart(e.touches[0].clientX, e.touches[0].clientY), { passive: true });
+  window.addEventListener('touchmove', (e) => dragMove(e.touches[0].clientX, e.touches[0].clientY, e), { passive: false });
   window.addEventListener('touchend', () => dragEnd(50));
 
   // A real drag/swipe shouldn't also fire a click on whatever link/button the
