@@ -575,12 +575,13 @@ img {
   position: relative;
   width: 100%;
   aspect-ratio: 21 / 9;
+
   /* Caps how tall the banner gets on wide desktop screens (where the 21:9
      width-driven height can push the "Đặt lịch ngay" bar below the fold)
      without affecting mobile, where the aspect-ratio height is already well
      under this cap. The blurred backdrop absorbs any extra letterboxing
      this introduces. */
-  max-height: min(62vh, 650px);
+  max-height: min(75vh, 750px);
   overflow: hidden;
   background-color: var(--secondary-light);
 }
@@ -1137,24 +1138,14 @@ input[type="date"].form-control::-webkit-date-and-time-value {
   padding: 1rem 0;
 }
 
+/* Layout, drag, spacing and slide sizing are all owned by Swiper (see the
+   #services-swiper init in script.js) - .services-carousel-track only needs
+   its swiper-wrapper role here, no manual flex/gap/cursor rules. Slides are
+   left un-stretched (flex-start, not the flexbox default stretch) so one
+   card expanding on hover (see .service-card p below) never drags its
+   neighbours taller too. */
 .services-carousel-track {
-  display: flex;
-  gap: 1.75rem;
-  transition: transform var(--transition-normal);
-  cursor: grab;
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-.services-carousel-track:active {
-  cursor: grabbing;
-}
-
-.services-carousel-track .service-card {
-  /* flex-basis set explicitly (not just min-width) because the card's
-     percentage-width image child otherwise confuses flexbox's automatic
-     content-based sizing and lets the card balloon to fill the track. */
-  flex: 0 0 calc(33.333% - 1.167rem);
+  align-items: flex-start;
 }
 
 .services-more-cta {
@@ -1220,6 +1211,16 @@ input[type="date"].form-control::-webkit-date-and-time-value {
   font-size: 0.95rem;
   margin-bottom: 1.5rem;
   flex-grow: 1;
+  cursor: help;
+
+  /* Clamp to a fixed number of lines (with a trailing "…") so cards with
+     shorter/longer descriptions line up at equal height; the full text is
+     available via the native title tooltip (see the title="" attribute
+     added alongside this text) instead of reflowing the card on hover. */
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .service-card-actions {
@@ -1708,21 +1709,11 @@ input[type="date"].form-control::-webkit-date-and-time-value {
   padding: 1rem 0;
 }
 
-.reviews-carousel-track {
-  display: flex;
-  gap: 2rem;
-  transition: transform var(--transition-normal);
-  cursor: grab;
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-.reviews-carousel-track:active {
-  cursor: grabbing;
-}
+/* Layout, drag, spacing and slide sizing are all owned by Swiper (see the
+   #reviews-swiper init in script.js) - .reviews-carousel-track only needs
+   its swiper-wrapper role here, no manual flex/gap/cursor rules. */
 
 .review-card {
-  min-width: calc(33.333% - 1.333rem);
   background-color: var(--bg-primary);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
@@ -1808,6 +1799,14 @@ input[type="date"].form-control::-webkit-date-and-time-value {
   background-color: var(--primary);
   width: 24px;
   border-radius: 100px;
+}
+
+/* Both Swiper carousels reuse the .carousel-dot/.active styling above via
+   bulletClass/bulletActiveClass (see script.js) - just cancel Swiper's own
+   absolute overlay positioning so the dots stay in normal flow below the
+   cards, like before. */
+.swiper-pagination {
+  position: static;
 }
 
 /* ==========================================================================
@@ -2526,6 +2525,15 @@ input[type="date"].form-control::-webkit-date-and-time-value {
   transform: translate(0) scale(1);
 }
 
+/* Swiper's loop mode clones the edge slides for seamless infinite scroll;
+   those clones are never seen by the reveal-on-scroll IntersectionObserver
+   (only the originals are), so without this they'd stay permanently
+   invisible whenever the loop cycles a clone into view. */
+.swiper-slide-duplicate.reveal {
+  opacity: 1;
+  transform: none;
+}
+
 /* Delay helpers for animations */
 .delay-100 { transition-delay: 100ms; }
 .delay-200 { transition-delay: 200ms; }
@@ -2574,10 +2582,6 @@ input[type="date"].form-control::-webkit-date-and-time-value {
     grid-template-columns: 1fr 1fr;
   }
 
-  .services-carousel-track .service-card {
-    flex-basis: calc(50% - 0.875rem);
-  }
-
   .services-grid {
     grid-template-columns: 1fr 1fr;
   }
@@ -2615,10 +2619,6 @@ input[type="date"].form-control::-webkit-date-and-time-value {
   .ba-category-btn {
     flex: 0 0 auto;
     white-space: nowrap;
-  }
-
-  .review-card {
-    min-width: calc(50% - 1rem);
   }
 
   .news-grid {
@@ -2727,10 +2727,6 @@ input[type="date"].form-control::-webkit-date-and-time-value {
     grid-template-columns: 1fr;
   }
 
-  .services-carousel-track .service-card {
-    flex-basis: 100%;
-  }
-
   .services-grid {
     grid-template-columns: 1fr;
   }
@@ -2754,10 +2750,6 @@ input[type="date"].form-control::-webkit-date-and-time-value {
 
   .ba-viewer-info {
     padding: 1.25rem;
-  }
-
-  .review-card {
-    min-width: 100%;
   }
 
   .news-grid {

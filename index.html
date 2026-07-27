@@ -38,6 +38,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
+  <!-- Swiper (CDN, no build step) - powers the Dịch vụ & Đánh giá carousels;
+       loaded before style.css so our own rules can override its defaults. -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+
   <!-- Style Sheets (style.css contains Plus Jakarta Sans & Inter fonts import) -->
   <link rel="stylesheet" href="style.css">
 
@@ -215,16 +219,16 @@
         <p>Phác đồ toàn diện được cá nhân hóa cho từng bệnh lý và vấn đề da liễu thường gặp</p>
       </div>
 
-      <div class="services-carousel-container reveal reveal-zoom-in">
-        <div class="services-carousel-track" id="services-track">
+      <div class="services-carousel-container reveal reveal-zoom-in swiper" id="services-swiper">
+        <div class="services-carousel-track swiper-wrapper" id="services-track">
         <!-- Service 1 -->
-        <div class="service-card reveal reveal-fade-up">
+        <div class="service-card swiper-slide reveal reveal-fade-up">
           <div class="service-image-box">
             <img src="assets/before_skin.png" alt="Điều trị mụn chuẩn y khoa" class="service-image" loading="lazy" width="400" height="260">
           </div>
           <div class="service-card-body">
             <h3>Điều trị mụn chuẩn y khoa</h3>
-            <p>Làm sạch sâu ổ mụn nhân, kháng viêm tầng sâu kết hợp ánh sáng sinh học giúp phục hồi cấu trúc biểu bì cấp tốc không để lại sẹo thâm.</p>
+            <p title="Làm sạch sâu ổ mụn nhân, kháng viêm tầng sâu kết hợp ánh sáng sinh học giúp phục hồi cấu trúc biểu bì cấp tốc không để lại sẹo thâm.">Làm sạch sâu ổ mụn nhân, kháng viêm tầng sâu kết hợp ánh sáng sinh học giúp phục hồi cấu trúc biểu bì cấp tốc không để lại sẹo thâm.</p>
             <div class="service-card-actions">
               <a href="#booking-card" class="btn btn-primary btn-sm">Nhận tư vấn</a>
               <a href="dich-vu-chi-tiet.html?slug=dieu-tri-mun" class="service-link">
@@ -236,13 +240,13 @@
         </div>
 
         <!-- Service 2 -->
-        <div class="service-card reveal reveal-fade-up delay-100">
+        <div class="service-card swiper-slide reveal reveal-fade-up delay-100">
           <div class="service-image-box">
             <img src="assets/after_skin.png" alt="Trẻ hóa da công nghệ cao" class="service-image" loading="lazy" width="400" height="260">
           </div>
           <div class="service-card-body">
             <h3>Trẻ hóa da công nghệ cao</h3>
-            <p>Tái tạo bề mặt da mịn màng, thúc đẩy tăng sinh sợi collagen giúp thu nhỏ lỗ chân lông hiệu quả bằng công nghệ hiện đại an toàn.</p>
+            <p title="Tái tạo bề mặt da mịn màng, thúc đẩy tăng sinh sợi collagen giúp thu nhỏ lỗ chân lông hiệu quả bằng công nghệ hiện đại an toàn.">Tái tạo bề mặt da mịn màng, thúc đẩy tăng sinh sợi collagen giúp thu nhỏ lỗ chân lông hiệu quả bằng công nghệ hiện đại an toàn.</p>
             <div class="service-card-actions">
               <a href="#booking-card" class="btn btn-primary btn-sm">Nhận tư vấn</a>
               <a href="dich-vu-chi-tiet.html?slug=tre-hoa-da" class="service-link">
@@ -254,13 +258,13 @@
         </div>
 
         <!-- Service 3 -->
-        <div class="service-card reveal reveal-fade-up delay-200">
+        <div class="service-card swiper-slide reveal reveal-fade-up delay-200">
           <div class="service-image-box">
             <img src="assets/treatment_room.png" alt="Trị nám, tàn nhang Laser" class="service-image" loading="lazy" width="400" height="260">
           </div>
           <div class="service-card-body">
             <h3>Trị nám, tàn nhang Laser</h3>
-            <p>Ứng dụng bước sóng Laser thế hệ mới phá hủy sắc tố melanin sẫm màu dưới tế bào biểu bì, trả lại nước da trắng hồng rạng rỡ.</p>
+            <p title="Ứng dụng bước sóng Laser thế hệ mới phá hủy sắc tố melanin sẫm màu dưới tế bào biểu bì, trả lại nước da trắng hồng rạng rỡ.">Ứng dụng bước sóng Laser thế hệ mới phá hủy sắc tố melanin sẫm màu dưới tế bào biểu bì, trả lại nước da trắng hồng rạng rỡ.</p>
             <div class="service-card-actions">
               <a href="#booking-card" class="btn btn-primary btn-sm">Nhận tư vấn</a>
               <a href="dich-vu-chi-tiet.html?slug=tri-nam-tan-nhang" class="service-link">
@@ -272,13 +276,13 @@
         </div>
 
         <!-- Service 4 -->
-        <div class="service-card reveal reveal-fade-up">
+        <div class="service-card swiper-slide reveal reveal-fade-up">
           <div class="service-image-box">
             <img src="assets/hero_clinic.png" alt="Chăm sóc da chuyên sâu" class="service-image" loading="lazy" width="400" height="260">
           </div>
           <div class="service-card-body">
             <h3>Chăm sóc da chuyên sâu</h3>
-            <p>Cấp ẩm đa tầng sâu Hyaluronic Acid, đắp nạ bổ sung vitamin nuôi dưỡng hàng rào bảo vệ biểu bì khỏe mạnh trước gốc tự do.</p>
+            <p title="Cấp ẩm đa tầng sâu Hyaluronic Acid, đắp nạ bổ sung vitamin nuôi dưỡng hàng rào bảo vệ biểu bì khỏe mạnh trước gốc tự do.">Cấp ẩm đa tầng sâu Hyaluronic Acid, đắp nạ bổ sung vitamin nuôi dưỡng hàng rào bảo vệ biểu bì khỏe mạnh trước gốc tự do.</p>
             <div class="service-card-actions">
               <a href="#booking-card" class="btn btn-primary btn-sm">Nhận tư vấn</a>
               <a href="dich-vu-chi-tiet.html?slug=cham-soc-da" class="service-link">
@@ -290,13 +294,13 @@
         </div>
 
         <!-- Service 5 -->
-        <div class="service-card reveal reveal-fade-up delay-100">
+        <div class="service-card swiper-slide reveal reveal-fade-up delay-100">
           <div class="service-image-box">
             <img src="assets/doctor.jpg" alt="Nâng cơ trẻ hóa Hifu" class="service-image" loading="lazy" width="400" height="260">
           </div>
           <div class="service-card-body">
             <h3>Nâng cơ trẻ hóa Hifu</h3>
-            <p>Sử dụng sóng siêu âm hội tụ cường độ cao tác động vào lớp cơ nông, giúp xóa nhăn, thon gọn viền hàm tức thì không nghỉ dưỡng.</p>
+            <p title="Sử dụng sóng siêu âm hội tụ cường độ cao tác động vào lớp cơ nông, giúp xóa nhăn, thon gọn viền hàm tức thì không nghỉ dưỡng.">Sử dụng sóng siêu âm hội tụ cường độ cao tác động vào lớp cơ nông, giúp xóa nhăn, thon gọn viền hàm tức thì không nghỉ dưỡng.</p>
             <div class="service-card-actions">
               <a href="#booking-card" class="btn btn-primary btn-sm">Nhận tư vấn</a>
               <a href="dich-vu-chi-tiet.html?slug=nang-co-hifu" class="service-link">
@@ -308,13 +312,13 @@
         </div>
 
         <!-- Service 6 -->
-        <div class="service-card reveal reveal-fade-up delay-200">
+        <div class="service-card swiper-slide reveal reveal-fade-up delay-200">
           <div class="service-image-box">
             <img src="assets/before_skin.png" alt="Điều trị sẹo rỗ chuyên sâu" class="service-image" loading="lazy" width="400" height="260">
           </div>
           <div class="service-card-body">
             <h3>Điều trị sẹo rỗ chuyên sâu</h3>
-            <p>Kỹ thuật tách xơ sẹo kết hợp Laser CO2 Fractional phá vỡ chân sẹo xơ cứng lâu năm, khôi phục cấu trúc collagen và làm đầy lõm sẹo.</p>
+            <p title="Kỹ thuật tách xơ sẹo kết hợp Laser CO2 Fractional phá vỡ chân sẹo xơ cứng lâu năm, khôi phục cấu trúc collagen và làm đầy lõm sẹo.">Kỹ thuật tách xơ sẹo kết hợp Laser CO2 Fractional phá vỡ chân sẹo xơ cứng lâu năm, khôi phục cấu trúc collagen và làm đầy lõm sẹo.</p>
             <div class="service-card-actions">
               <a href="#booking-card" class="btn btn-primary btn-sm">Nhận tư vấn</a>
               <a href="dich-vu-chi-tiet.html?slug=seo-ro" class="service-link">
@@ -326,13 +330,13 @@
         </div>
 
         <!-- Service 7 -->
-        <div class="service-card reveal reveal-fade-up">
+        <div class="service-card swiper-slide reveal reveal-fade-up">
           <div class="service-image-box">
             <img src="assets/treatment_room.png" alt="Triệt lông vĩnh viễn Diode" class="service-image" loading="lazy" width="400" height="260">
           </div>
           <div class="service-card-body">
             <h3>Triệt lông vĩnh viễn Diode</h3>
-            <p>Ứng dụng công nghệ ánh sáng lạnh vô khuẩn giúp làm sạch gốc nang lông cơ thể, ngăn tái phát vĩnh viễn đồng thời trị thâm sần tối ưu.</p>
+            <p title="Ứng dụng công nghệ ánh sáng lạnh vô khuẩn giúp làm sạch gốc nang lông cơ thể, ngăn tái phát vĩnh viễn đồng thời trị thâm sần tối ưu.">Ứng dụng công nghệ ánh sáng lạnh vô khuẩn giúp làm sạch gốc nang lông cơ thể, ngăn tái phát vĩnh viễn đồng thời trị thâm sần tối ưu.</p>
             <div class="service-card-actions">
               <a href="#booking-card" class="btn btn-primary btn-sm">Nhận tư vấn</a>
               <a href="dich-vu-chi-tiet.html?slug=triet-long-diode" class="service-link">
@@ -344,13 +348,13 @@
         </div>
 
         <!-- Service 8 -->
-        <div class="service-card reveal reveal-fade-up delay-100">
+        <div class="service-card swiper-slide reveal reveal-fade-up delay-100">
           <div class="service-image-box">
             <img src="assets/after_skin.png" alt="Điều trị viêm da cơ địa" class="service-image" loading="lazy" width="400" height="260">
           </div>
           <div class="service-card-body">
             <h3>Điều trị viêm da cơ địa</h3>
-            <p>Thăm khám, xét nghiệm chẩn đoán chính xác nguyên nhân dị ứng. Phác đồ bôi thuốc kháng viêm an toàn không để lại di chứng.</p>
+            <p title="Thăm khám, xét nghiệm chẩn đoán chính xác nguyên nhân dị ứng. Phác đồ bôi thuốc kháng viêm an toàn không để lại di chứng.">Thăm khám, xét nghiệm chẩn đoán chính xác nguyên nhân dị ứng. Phác đồ bôi thuốc kháng viêm an toàn không để lại di chứng.</p>
             <div class="service-card-actions">
               <a href="#booking-card" class="btn btn-primary btn-sm">Nhận tư vấn</a>
               <a href="dich-vu-chi-tiet.html?slug=viem-da-co-dia" class="service-link">
@@ -362,13 +366,13 @@
         </div>
 
         <!-- Service 9 -->
-        <div class="service-card reveal reveal-fade-up delay-200">
+        <div class="service-card swiper-slide reveal reveal-fade-up delay-200">
           <div class="service-image-box">
             <img src="assets/doctor.jpg" alt="Tiêm Botox" class="service-image" loading="lazy" width="400" height="260">
           </div>
           <div class="service-card-body">
             <h3>Tiêm Botox</h3>
-            <p>Tiêm botulinum toxin chuẩn liều lượng y khoa giúp thon gọn hàm, cải thiện nhăn động vùng trán, đuôi mắt tự nhiên, an toàn.</p>
+            <p title="Tiêm botulinum toxin chuẩn liều lượng y khoa giúp thon gọn hàm, cải thiện nhăn động vùng trán, đuôi mắt tự nhiên, an toàn.">Tiêm botulinum toxin chuẩn liều lượng y khoa giúp thon gọn hàm, cải thiện nhăn động vùng trán, đuôi mắt tự nhiên, an toàn.</p>
             <div class="service-card-actions">
               <a href="#booking-card" class="btn btn-primary btn-sm">Nhận tư vấn</a>
               <a href="dich-vu-chi-tiet.html?slug=tiem-botox" class="service-link">
@@ -380,13 +384,13 @@
         </div>
 
         <!-- Service 10 -->
-        <div class="service-card reveal reveal-fade-up">
+        <div class="service-card swiper-slide reveal reveal-fade-up">
           <div class="service-image-box">
             <img src="assets/hero_clinic.png" alt="Xóa nhăn" class="service-image" loading="lazy" width="400" height="260">
           </div>
           <div class="service-card-body">
             <h3>Xóa nhăn</h3>
-            <p>Kết hợp Laser tái tạo bề mặt và căng chỉ collagen sinh học giúp làm mờ nếp nhăn tĩnh, mang lại làn da căng mịn, tươi trẻ.</p>
+            <p title="Kết hợp Laser tái tạo bề mặt và căng chỉ collagen sinh học giúp làm mờ nếp nhăn tĩnh, mang lại làn da căng mịn, tươi trẻ.">Kết hợp Laser tái tạo bề mặt và căng chỉ collagen sinh học giúp làm mờ nếp nhăn tĩnh, mang lại làn da căng mịn, tươi trẻ.</p>
             <div class="service-card-actions">
               <a href="#booking-card" class="btn btn-primary btn-sm">Nhận tư vấn</a>
               <a href="dich-vu-chi-tiet.html?slug=xoa-nhan" class="service-link">
@@ -399,7 +403,7 @@
       </div>
 
       <!-- Carousel Indicators -->
-      <div class="carousel-indicators" id="services-carousel-indicators"></div>
+      <div class="carousel-indicators swiper-pagination" id="services-carousel-indicators"></div>
       </div>
 
       <div class="services-more-cta">
@@ -703,10 +707,10 @@
       </div>
 
       <!-- Carousel Container -->
-      <div class="reviews-carousel-container reveal reveal-zoom-in">
-        <div class="reviews-carousel-track" id="reviews-track">
+      <div class="reviews-carousel-container reveal reveal-zoom-in swiper" id="reviews-swiper">
+        <div class="reviews-carousel-track swiper-wrapper" id="reviews-track">
           <!-- Card 1 -->
-          <div class="review-card">
+          <div class="review-card swiper-slide">
             <div>
               <div class="review-rating">
                 <!-- 5 stars -->
@@ -730,7 +734,7 @@
           </div>
 
           <!-- Card 2 -->
-          <div class="review-card">
+          <div class="review-card swiper-slide">
             <div>
               <div class="review-rating">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
@@ -753,7 +757,7 @@
           </div>
 
           <!-- Card 3 -->
-          <div class="review-card">
+          <div class="review-card swiper-slide">
             <div>
               <div class="review-rating">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
@@ -776,7 +780,7 @@
           </div>
 
           <!-- Card 4 -->
-          <div class="review-card">
+          <div class="review-card swiper-slide">
             <div>
               <div class="review-rating">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
@@ -800,8 +804,8 @@
         </div>
 
         <!-- Carousel Indicators -->
-        <div class="carousel-indicators" id="carousel-indicators">
-          <!-- JS will insert dots -->
+        <div class="carousel-indicators swiper-pagination" id="carousel-indicators">
+          <!-- Swiper will insert pagination bullets -->
         </div>
       </div>
     </div>
@@ -1242,6 +1246,7 @@
   </div>
 
   <!-- JavaScript File -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

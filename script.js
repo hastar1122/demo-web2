@@ -5,150 +5,29 @@
    ========================================================================== */
 
 /* ==========================================================================
-   Reusable drag/swipe carousel engine (used by Testimonials & Services)
+   Carousel init helper (Dịch vụ & Đánh giá) - Swiper (loaded via CDN in
+   index.html) owns dragging, touch/scroll-axis handling and the infinite
+   loop; this just wires it up with this project's breakpoints and reuses
+   the existing .carousel-dot/.active styling for pagination.
    ========================================================================== */
-function initDragCarousel({ trackSelector, cardSelector, dotsSelector, gap }) {
-  const track = document.querySelector(trackSelector);
-  const dotsContainer = document.querySelector(dotsSelector);
-  if (!track || !dotsContainer) return;
+function initCardSwiper(rootSelector, spaceBetween) {
+  if (typeof Swiper === 'undefined' || !document.querySelector(rootSelector)) return;
 
-  const cards = track.querySelectorAll(cardSelector);
-  if (!cards.length) return;
-
-  let currentIndex = 0;
-  let cardWidth = cards[0].offsetWidth;
-
-  const getVisibleCards = () => {
-    const width = window.innerWidth;
-    if (width <= 576) return 1;
-    if (width <= 1024) return 2;
-    return 3;
-  };
-
-  const maxIndex = () => Math.max(0, cards.length - getVisibleCards());
-
-  const createDots = () => {
-    dotsContainer.innerHTML = '';
-    const dotCount = maxIndex() + 1;
-
-    for (let i = 0; i < dotCount; i++) {
-      const dot = document.createElement('button');
-      dot.type = 'button';
-      dot.classList.add('carousel-dot');
-      if (i === 0) dot.classList.add('active');
-      dot.setAttribute('data-index', i);
-      dot.setAttribute('aria-label', `Xem mục ${i + 1}`);
-      dot.addEventListener('click', () => {
-        currentIndex = i;
-        updateSlider();
-      });
-      dotsContainer.appendChild(dot);
+  return new Swiper(rootSelector, {
+    loop: true,
+    grabCursor: true,
+    spaceBetween,
+    slidesPerView: 1,
+    breakpoints: {
+      577: { slidesPerView: 2 },
+      1025: { slidesPerView: 3 }
+    },
+    pagination: {
+      el: `${rootSelector} .swiper-pagination`,
+      clickable: true,
+      bulletClass: 'carousel-dot',
+      bulletActiveClass: 'active'
     }
-  };
-
-  const updateSlider = () => {
-    cardWidth = cards[0].offsetWidth;
-    const amountToMove = currentIndex * (cardWidth + gap);
-    track.style.transform = `translateX(-${amountToMove}px)`;
-
-    const dots = dotsContainer.querySelectorAll('.carousel-dot');
-    dots.forEach((dot, index) => dot.classList.toggle('active', index === currentIndex));
-  };
-
-  let startX = 0;
-  let startY = 0;
-  let currentX = 0;
-  let isDraggingTrack = false;
-  let originalTranslate = 0;
-  let hasDragged = false;
-  // null = not yet decided, 'horizontal' = swiping the carousel,
-  // 'vertical' = the user is scrolling the page - carousel ignores the rest
-  // of this gesture so a vertical scroll starting on a card doesn't also
-  // yank the track sideways.
-  let dragAxis = null;
-
-  const dragStart = (clientX, clientY) => {
-    isDraggingTrack = true;
-    dragAxis = null;
-    startX = clientX;
-    startY = clientY;
-    // Reset currentX to the start position too - otherwise a plain tap (no
-    // touchmove/mousemove at all) left it at its stale value from the
-    // previous drag, so dragEnd computed a huge bogus diffX and treated
-    // every tap as a swipe, which is why taps on "Xem chi tiết"/"Nhận tư
-    // vấn" stopped registering as clicks.
-    currentX = clientX;
-    hasDragged = false;
-    track.style.transition = 'none';
-    originalTranslate = -currentIndex * (cardWidth + gap);
-  };
-
-  const dragMove = (clientX, clientY, event) => {
-    if (!isDraggingTrack) return;
-
-    if (dragAxis === null) {
-      const deltaX = clientX - startX;
-      const deltaY = clientY - startY;
-      // Wait for a clear enough movement before committing to an axis, then
-      // stick with that decision for the rest of the gesture.
-      if (Math.abs(deltaX) < 6 && Math.abs(deltaY) < 6) return;
-      dragAxis = Math.abs(deltaX) > Math.abs(deltaY) ? 'horizontal' : 'vertical';
-      if (dragAxis === 'vertical') {
-        isDraggingTrack = false;
-        return;
-      }
-    }
-
-    // Once we know it's a horizontal swipe, stop the page from also
-    // scrolling vertically while the carousel is being dragged.
-    if (event && event.cancelable) event.preventDefault();
-
-    currentX = clientX;
-    if (Math.abs(currentX - startX) > 8) hasDragged = true;
-    track.style.transform = `translateX(${originalTranslate + (currentX - startX)}px)`;
-  };
-
-  const dragEnd = (threshold) => {
-    if (!isDraggingTrack) return;
-    isDraggingTrack = false;
-    track.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
-
-    const diffX = currentX - startX;
-    if (diffX < -threshold) {
-      // Swiping past the last item loops back to the first instead of
-      // stopping dead, so the carousel always feels like it keeps going.
-      currentIndex = currentIndex < maxIndex() ? currentIndex + 1 : 0;
-    } else if (diffX > threshold) {
-      currentIndex = currentIndex > 0 ? currentIndex - 1 : maxIndex();
-    }
-    updateSlider();
-  };
-
-  track.addEventListener('mousedown', (e) => dragStart(e.clientX, e.clientY));
-  window.addEventListener('mousemove', (e) => dragMove(e.clientX, e.clientY));
-  window.addEventListener('mouseup', () => dragEnd(100));
-
-  track.addEventListener('touchstart', (e) => dragStart(e.touches[0].clientX, e.touches[0].clientY), { passive: true });
-  window.addEventListener('touchmove', (e) => dragMove(e.touches[0].clientX, e.touches[0].clientY, e), { passive: false });
-  window.addEventListener('touchend', () => dragEnd(50));
-
-  // A real drag/swipe shouldn't also fire a click on whatever link/button the
-  // pointer happens to release over; a plain tap (no meaningful movement)
-  // should pass through normally so "Xem chi tiết"/"Nhận tư vấn" still work.
-  track.addEventListener('click', (e) => {
-    if (hasDragged) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
-  }, true);
-
-  createDots();
-  window.addEventListener('resize', () => {
-    if (currentIndex > maxIndex()) {
-      currentIndex = maxIndex();
-    }
-    createDots();
-    updateSlider();
   });
 }
 
@@ -328,7 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
         <div class="service-card-body">
           <h3>${service.title}</h3>
-          <p>${service.shortDesc}</p>
+          <p title="${service.shortDesc}">${service.shortDesc}</p>
           <div class="service-card-actions">
             <a href="index.html#booking-card" class="btn btn-primary btn-sm">Nhận tư vấn</a>
             <a href="dich-vu-chi-tiet.html?slug=${service.slug}" class="service-link">
@@ -397,7 +276,7 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
         <div class="service-card-body">
           <h3>${s.title}</h3>
-          <p>${s.shortDesc}</p>
+          <p title="${s.shortDesc}">${s.shortDesc}</p>
           <div class="service-card-actions">
             <a href="index.html#booking-card" class="btn btn-primary btn-sm">Nhận tư vấn</a>
             <a href="dich-vu-chi-tiet.html?slug=${s.slug}" class="service-link">
@@ -619,12 +498,7 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ==========================================================================
      7. Testimonials Carousel Slider
      ========================================================================== */
-  initDragCarousel({
-    trackSelector: '#reviews-track',
-    cardSelector: '.review-card',
-    dotsSelector: '#carousel-indicators',
-    gap: 32
-  });
+  initCardSwiper('#reviews-swiper', 32);
 
 
   /* ==========================================================================
@@ -714,12 +588,7 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ==========================================================================
      9b. Services Carousel (shares the drag-carousel engine with Testimonials)
      ========================================================================== */
-  initDragCarousel({
-    trackSelector: '#services-track',
-    cardSelector: '.service-card',
-    dotsSelector: '#services-carousel-indicators',
-    gap: 28
-  });
+  initCardSwiper('#services-swiper', 28);
 
 
   /* ==========================================================================
