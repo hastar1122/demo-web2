@@ -10,6 +10,7 @@ module.exports = [
       globals: {
         ...globals.browser,
         SERVICES_DATA: "readonly",
+        NEWS_DATA: "readonly",
         Swiper: "readonly",
       },
     },

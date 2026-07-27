@@ -10,10 +10,10 @@
    loop; this just wires it up with this project's breakpoints and reuses
    the existing .carousel-dot/.active styling for pagination.
    ========================================================================== */
-function initCardSwiper(rootSelector, spaceBetween) {
+function initCardSwiper(rootSelector, spaceBetween, navEls) {
   if (typeof Swiper === 'undefined' || !document.querySelector(rootSelector)) return;
 
-  return new Swiper(rootSelector, {
+  const config = {
     loop: true,
     grabCursor: true,
     spaceBetween,
@@ -28,7 +28,13 @@ function initCardSwiper(rootSelector, spaceBetween) {
       bulletClass: 'carousel-dot',
       bulletActiveClass: 'active'
     }
-  });
+  };
+
+  if (navEls) {
+    config.navigation = { nextEl: navEls.next, prevEl: navEls.prev };
+  }
+
+  return new Swiper(rootSelector, config);
 }
 
 
@@ -297,6 +303,92 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   /* ==========================================================================
+     3d. News Full Grid (tin-tuc.html only) - rendered from news-data.js
+     ========================================================================== */
+  const newsCardMarkup = (article) => `
+    <article class="news-article-card reveal reveal-fade-up">
+      <div class="news-article-img-box">
+        <img src="${article.image}" alt="${article.title}" class="news-article-img" style="${article.imageStyle || ''}" loading="lazy">
+        <span class="news-category-badge">${article.category}</span>
+      </div>
+      <div class="news-article-content">
+        <div class="news-article-meta">
+          <span class="news-date">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+            </svg>
+            ${article.date}
+          </span>
+          <span class="news-author">${article.author}</span>
+        </div>
+        <h2>${article.title}</h2>
+        <p>${article.excerpt}</p>
+        <div class="news-article-footer">
+          <a href="tin-tuc-chi-tiet.html?slug=${article.slug}" class="btn btn-secondary btn-ripple">Đọc thêm</a>
+          <div class="news-stats">
+            <span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+              </svg>
+              ${article.views.toLocaleString('vi-VN')} lượt xem
+            </span>
+          </div>
+        </div>
+      </div>
+    </article>
+  `;
+
+  const newsFullGrid = document.getElementById('news-full-grid');
+  if (newsFullGrid && typeof NEWS_DATA !== 'undefined') {
+    newsFullGrid.innerHTML = NEWS_DATA.map(newsCardMarkup).join('');
+    newsFullGrid.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+  }
+
+
+  /* ==========================================================================
+     3e. News Detail Page (tin-tuc-chi-tiet.html only) - reads ?slug= and
+         renders full content from news-data.js
+     ========================================================================== */
+  const newsDetailTitleEl = document.getElementById('detail-title');
+  if (newsDetailTitleEl && typeof NEWS_DATA !== 'undefined') {
+    const params = new URLSearchParams(window.location.search);
+    const slug = params.get('slug');
+    const article = NEWS_DATA.find(a => a.slug === slug) || NEWS_DATA[0];
+
+    document.title = `${article.title} | Phòng Khám Da Liễu Bác Sĩ Tân`;
+    const newsPageTitleEl = document.getElementById('page-title');
+    if (newsPageTitleEl) newsPageTitleEl.textContent = document.title;
+
+    document.getElementById('detail-category').textContent = article.category;
+    newsDetailTitleEl.textContent = article.title;
+    document.getElementById('breadcrumb-current').textContent = article.title;
+
+    document.getElementById('detail-meta-date').innerHTML += ` ${article.date}`;
+    document.getElementById('detail-meta-author').innerHTML += ` ${article.author}`;
+    document.getElementById('detail-meta-views').innerHTML += ` ${article.views.toLocaleString('vi-VN')} lượt xem`;
+
+    const newsDetailImgEl = document.getElementById('detail-image');
+    newsDetailImgEl.src = article.image;
+    newsDetailImgEl.alt = article.title;
+    if (article.imageStyle) newsDetailImgEl.style.cssText = article.imageStyle;
+
+    const bodyEl = document.getElementById('detail-body');
+    bodyEl.innerHTML = article.sections.map(section => `
+      ${section.heading ? `<h2>${section.heading}</h2>` : ''}
+      ${section.paragraphs.map(p => `<p>${p}</p>`).join('')}
+    `).join('');
+
+    const newsRelatedGridEl = document.getElementById('detail-related-grid');
+    const relatedNews = NEWS_DATA.filter(a => a.slug !== article.slug).slice(0, 3);
+    newsRelatedGridEl.innerHTML = relatedNews.map(newsCardMarkup).join('');
+
+    // The global reveal observer above only saw elements present at initial
+    // DOMContentLoaded, so newly injected content needs to be observed too.
+    newsRelatedGridEl.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+  }
+
+
+  /* ==========================================================================
      4. Statistics Counter Animation
      ========================================================================== */
   const statNumbers = document.querySelectorAll('.stat-number');
@@ -498,7 +590,7 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ==========================================================================
      7. Testimonials Carousel Slider
      ========================================================================== */
-  initCardSwiper('#reviews-swiper', 32);
+  initCardSwiper('#reviews-swiper', 32, { next: '#reviews-swiper-next', prev: '#reviews-swiper-prev' });
 
 
   /* ==========================================================================
@@ -588,7 +680,33 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ==========================================================================
      9b. Services Carousel (shares the drag-carousel engine with Testimonials)
      ========================================================================== */
-  initCardSwiper('#services-swiper', 28);
+  initCardSwiper('#services-swiper', 28, { next: '#services-swiper-next', prev: '#services-swiper-prev' });
+
+  /* ==========================================================================
+     9c. Before/After category list - explicit scroll arrows (mobile/tablet
+     only, where the list becomes a horizontal scroller; see CSS @768px).
+     Each click selects the adjacent category (reusing its own click handler
+     above) and glides it into view, so the arrow behaves like the services
+     carousel's prev/next instead of a plain blind scroll.
+     ========================================================================== */
+  const baCategoryList = document.getElementById('ba-category-list');
+  const baCategoryPrev = document.getElementById('ba-category-prev');
+  const baCategoryNext = document.getElementById('ba-category-next');
+
+  if (baCategoryList && baCategoryPrev && baCategoryNext && baCategoryButtons.length) {
+    const baCategoryArr = Array.from(baCategoryButtons);
+
+    const stepBaCategory = (step) => {
+      const currentIndex = baCategoryArr.findIndex(b => b.classList.contains('is-active'));
+      const nextIndex = (currentIndex + step + baCategoryArr.length) % baCategoryArr.length;
+      const nextBtn = baCategoryArr[nextIndex];
+      nextBtn.click();
+      nextBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    };
+
+    baCategoryPrev.addEventListener('click', () => stepBaCategory(-1));
+    baCategoryNext.addEventListener('click', () => stepBaCategory(1));
+  }
 
 
   /* ==========================================================================

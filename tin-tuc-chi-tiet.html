@@ -3,25 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Tin tức và kiến thức chăm sóc da từ Phòng khám da liễu thẩm mỹ Bác Sĩ Tân - Cập nhật thông tin mới nhất về điều trị da liễu, làm đẹp và chăm sóc sức khỏe làn da.">
-  <meta name="keywords" content="tin tức da liễu, kiến thức chăm sóc da, bác sĩ tân, tin tức làm đẹp">
+  <meta name="description" content="Tin tức và kiến thức chăm sóc da từ Phòng khám Da liễu Bác sĩ Tân - cập nhật kiến thức chuyên sâu về điều trị da liễu và làm đẹp.">
   <meta name="author" content="Phòng Khám Da Liễu Bác Sĩ Tân">
   <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#15803D">
 
-  <title>Tin Tức & Kiến Thức Da Liễu | Phòng Khám Da Liễu Bác Sĩ Tân</title>
+  <title id="page-title">Chi Tiết Bài Viết | Phòng Khám Da Liễu Bác Sĩ Tân</title>
 
   <!-- Canonical domain is a placeholder (matches index.html) - update once
-       the real production domain is registered. -->
-  <link rel="canonical" href="https://dalieubacsitan.vn/tin-tuc.html">
+       the real production domain is registered. Title/description are set
+       dynamically per-article by script.js, so these are the generic
+       fallback OG tags for a bare load of this page. -->
+  <link rel="canonical" href="https://dalieubacsitan.vn/tin-tuc-chi-tiet.html">
 
   <!-- Open Graph -->
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://dalieubacsitan.vn/tin-tuc.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://dalieubacsitan.vn/tin-tuc-chi-tiet.html">
   <meta property="og:site_name" content="Phòng Khám Da Liễu Bác Sĩ Tân">
   <meta property="og:locale" content="vi_VN">
-  <meta property="og:title" content="Tin Tức & Kiến Thức Da Liễu | Phòng Khám Da Liễu Bác Sĩ Tân">
-  <meta property="og:description" content="Tin tức và kiến thức chăm sóc da từ Phòng khám da liễu thẩm mỹ Bác Sĩ Tân - Cập nhật thông tin mới nhất về điều trị da liễu, làm đẹp và chăm sóc sức khỏe làn da.">
+  <meta property="og:title" content="Chi Tiết Bài Viết | Phòng Khám Da Liễu Bác Sĩ Tân">
+  <meta property="og:description" content="Tin tức và kiến thức chăm sóc da từ Phòng khám Da liễu Bác sĩ Tân.">
   <meta property="og:image" content="https://dalieubacsitan.vn/assets/treatment_room.png">
 
   <!-- Favicon -->
@@ -78,7 +79,7 @@
           </div>
         </a>
         <a href="index.html#booking-card" class="btn btn-primary btn-header" id="header-cta-btn">Đặt lịch ngay</a>
-        
+
         <!-- Hamburger Menu Button -->
         <button class="hamburger" id="hamburger-btn" aria-label="Toggle navigation">
           <span></span>
@@ -90,42 +91,57 @@
   </header>
 
   <!-- ==========================================================================
-       Page Header Banner
+       Page Header Banner (populated from news-data.js via ?slug=)
        ========================================================================== -->
   <section class="page-header-section">
     <div class="container">
-      <div class="page-header-content reveal reveal-fade-up">
-        <span class="badge">Tin tức & Kiến thức</span>
-        <h1>Cập Nhật Tin Tức <span>Da Liễu</span></h1>
-        <p>Khám phá những kiến thức hữu ích về chăm sóc da, xu hướng làm đẹp và các phương pháp điều trị hiện đại từ đội ngũ chuyên gia</p>
+      <div class="page-header-content page-header-content--wide reveal reveal-fade-up">
+        <span class="badge" id="detail-category">Tin tức</span>
+        <h1 id="detail-title">Đang tải bài viết...</h1>
+        <div class="news-detail-meta" id="detail-meta">
+          <span class="news-detail-meta-item" id="detail-meta-date">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </span>
+          <span class="news-detail-meta-item" id="detail-meta-author">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </span>
+          <span class="news-detail-meta-item" id="detail-meta-views">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </span>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- ==========================================================================
-       News Grid Section (rendered from news-data.js - see script.js)
+       Article Detail Content
        ========================================================================== -->
   <section class="section">
     <div class="container">
-      <div class="news-page-grid" id="news-full-grid"></div>
-    </div>
-  </section>
+      <nav class="breadcrumb">
+        <a href="index.html">Trang chủ</a>
+        <span class="sep">/</span>
+        <a href="tin-tuc.html">Tin tức</a>
+        <span class="sep">/</span>
+        <span id="breadcrumb-current">Chi tiết</span>
+      </nav>
 
-  <!-- ==========================================================================
-       CTA Section
-       ========================================================================== -->
-  <section class="section cta-section">
-    <div class="container cta-container reveal reveal-zoom-in">
-      <h2>Nhận Tư Vấn Miễn Phí Từ Bác Sĩ Da Liễu</h2>
-      <p>Đặt lịch khám ngay hôm nay để nhận ưu đãi soi da 3D miễn phí cùng phác đồ điều trị cá nhân hóa từ các chuyên gia 15 năm kinh nghiệm.</p>
-      <div class="cta-actions">
-        <a href="index.html#booking-card" class="btn btn-white btn-ripple">Đặt lịch hẹn ngay</a>
-        <a href="tel:19001234" class="btn btn-secondary btn-ripple" style="border-color: var(--bg-primary); color: var(--bg-primary);">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 0.25rem;">
-            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
-          </svg>
-          Gọi Hotline: 1900 1234
-        </a>
+      <img id="detail-image" alt="" class="news-detail-hero-image" loading="lazy">
+
+      <div class="news-detail-body" id="detail-body"></div>
+
+      <div class="detail-cta reveal reveal-zoom-in">
+        <h3>Đặt Lịch Tư Vấn Miễn Phí Ngay Hôm Nay</h3>
+        <p>Bác sĩ sẽ trực tiếp thăm khám và tư vấn phác đồ phù hợp nhất với tình trạng da của bạn.</p>
+        <a href="index.html#booking-card" class="btn btn-white btn-lg btn-ripple">Đặt lịch ngay</a>
+      </div>
+
+      <div class="detail-related">
+        <div class="section-header reveal reveal-fade-up">
+          <span class="badge">Khám phá thêm</span>
+          <h2>Bài Viết <span>Liên Quan</span></h2>
+        </div>
+        <div class="news-related-grid" id="detail-related-grid"></div>
       </div>
     </div>
   </section>
@@ -221,7 +237,7 @@
         </div>
       </div>
     </div>
-    
+
     <!-- Footer copyright -->
     <div class="footer-bottom">
       <div class="container">
@@ -231,7 +247,7 @@
   </footer>
 
   <!-- ==========================================================================
-       Floating Buttons
+       Floating Buttons (Zalo, Messenger, Hotline, Scroll Top)
        ========================================================================== -->
   <div class="floating-widgets">
     <!-- Booking -->
@@ -346,7 +362,7 @@
     </div>
   </div>
 
-  <!-- JavaScript File -->
+  <!-- JavaScript Files -->
   <script src="news-data.js"></script>
   <script src="script.js"></script>
 </body>

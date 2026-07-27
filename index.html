@@ -162,6 +162,29 @@
       <div class="hero-slider-dots" id="hero-slider-dots"></div>
     </div>
 
+    <!-- Mobile-only doctor spotlight: on phones the banner shrinks enough
+         that the doctor's face/credentials baked into the artwork get lost,
+         so surface them explicitly here (hidden on desktop where the
+         full-size banner already reads clearly on its own). -->
+    <div class="hero-doctor-spotlight">
+      <img src="assets/doctor.jpg" alt="BS. CKI Lê Công Tân" class="hero-doctor-spotlight-avatar" width="60" height="60" loading="lazy">
+      <div class="hero-doctor-spotlight-info">
+        <div class="hero-doctor-spotlight-rating" aria-hidden="true">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <span>5.000+ khách hàng tin chọn</span>
+        </div>
+        <h3>BS. CKI Lê Công Tân</h3>
+        <p>Bác sĩ phụ trách chuyên môn · 12+ năm kinh nghiệm da liễu</p>
+      </div>
+      <a href="#about" class="hero-doctor-spotlight-link" aria-label="Xem hồ sơ bác sĩ">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+      </a>
+    </div>
+
     <!-- CTA strip attached directly under the banner - kept off the artwork
          itself (an overlaid button collided with the banner's own baked-in
          content and felt heavy); this reads as a clean, deliberate action
@@ -219,7 +242,14 @@
         <p>Phác đồ toàn diện được cá nhân hóa cho từng bệnh lý và vấn đề da liễu thường gặp</p>
       </div>
 
-      <div class="services-carousel-container reveal reveal-zoom-in swiper" id="services-swiper">
+      <div class="services-carousel-outer reveal reveal-zoom-in">
+        <button type="button" class="carousel-nav-arrow carousel-nav-prev" id="services-swiper-prev" aria-label="Dịch vụ trước">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <button type="button" class="carousel-nav-arrow carousel-nav-next" id="services-swiper-next" aria-label="Dịch vụ tiếp theo">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        <div class="services-carousel-container swiper" id="services-swiper">
         <div class="services-carousel-track swiper-wrapper" id="services-track">
         <!-- Service 1 -->
         <div class="service-card swiper-slide reveal reveal-fade-up">
@@ -405,69 +435,10 @@
       <!-- Carousel Indicators -->
       <div class="carousel-indicators swiper-pagination" id="services-carousel-indicators"></div>
       </div>
+      </div>
 
       <div class="services-more-cta">
         <a href="dich-vu.html" class="btn btn-secondary btn-lg btn-ripple">Xem thêm dịch vụ</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ==========================================================================
-       Trust Bar (Uy tín)
-       ========================================================================== -->
-  <section class="trust-bar-section">
-    <div class="container">
-      <div class="trust-bar-grid">
-        <!-- Item 1 -->
-        <div class="trust-card reveal reveal-fade-up">
-          <div class="trust-icon-wrapper">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-              <circle cx="9" cy="7" r="4"/>
-              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-            </svg>
-          </div>
-          <h4>Bác sĩ chuyên môn cao</h4>
-          <p>100% đội ngũ bác sĩ CKI và CKII tốt nghiệp đại học y khoa danh tiếng.</p>
-        </div>
-
-        <!-- Item 2 -->
-        <div class="trust-card reveal reveal-fade-up delay-100">
-          <div class="trust-icon-wrapper">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="2" width="20" height="8" rx="2" ry="2"/>
-              <rect x="2" y="14" width="20" height="8" rx="2" ry="2"/>
-              <line x1="6" y1="6" x2="6.01" y2="6"/>
-              <line x1="6" y1="18" x2="6.01" y2="18"/>
-            </svg>
-          </div>
-          <h4>Thiết bị hiện đại</h4>
-          <p>Hệ thống máy móc Laser, HIFU nhập khẩu chính ngạch từ Đức, Mỹ, Hàn Quốc.</p>
-        </div>
-
-        <!-- Item 3 -->
-        <div class="trust-card reveal reveal-fade-up delay-200">
-          <div class="trust-icon-wrapper">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-              <polyline points="22 4 12 14.01 9 11.01"/>
-            </svg>
-          </div>
-          <h4>Điều trị chuẩn y khoa</h4>
-          <p>Môi trường khám chữa bệnh vô khuẩn vô trùng hoàn toàn theo quy chuẩn Bộ Y Tế.</p>
-        </div>
-
-        <!-- Item 4 -->
-        <div class="trust-card reveal reveal-fade-up delay-300">
-          <div class="trust-icon-wrapper">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-            </svg>
-          </div>
-          <h4>Theo dõi sau điều trị</h4>
-          <p>Hỗ trợ chăm sóc khách hàng 24/7 trước và sau khi hoàn thành liệu trình điều trị.</p>
-        </div>
       </div>
     </div>
   </section>
@@ -551,6 +522,31 @@
   </section>
 
   <!-- ==========================================================================
+       Section Trang thiết bị hiện đại (thay cho Trust Bar cũ)
+       ========================================================================== -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header reveal reveal-fade-up">
+        <span class="badge">Cơ sở & trang thiết bị</span>
+        <h2>Đầu Tư Hệ Thống <span>Thiết Bị Hiện Đại</span></h2>
+        <p>Hệ thống máy móc Laser, HIFU nhập khẩu chính ngạch từ Đức, Mỹ, Hàn Quốc, được kiểm định và bảo trì định kỳ nghiêm ngặt</p>
+      </div>
+
+      <div class="employees-showcase reveal reveal-zoom-in">
+        <div class="equipment-gallery">
+          <img src="assets/treatment_room.png" alt="Phòng điều trị trang bị máy Laser Lutronic tại Phòng Khám Da Liễu Bác Sĩ Tân" loading="lazy" width="1024" height="1024">
+          <img src="assets/device_1.png" alt="Hệ thống máy CO2 Laser và Q-Plus C tại phòng điều trị" loading="lazy" width="1200" height="900">
+          <img src="assets/device_2.png" alt="Máy soi da phân tích chuyên sâu và ghế điều trị" loading="lazy" width="1200" height="900">
+          <img src="assets/device_3.png" alt="Hệ thống máy IPL, Laser Fotona và siêu âm trị liệu" loading="lazy" width="1200" height="900">
+        </div>
+        <p class="employees-caption">
+          Mỗi phòng điều trị được trang bị đồng bộ hệ thống máy móc Laser, HIFU nhập khẩu chính hãng từ Đức, Mỹ, Hàn Quốc - trải qua kiểm định và bảo trì định kỳ nghiêm ngặt, đảm bảo hiệu quả điều trị tối ưu và an toàn tuyệt đối cho khách hàng trong từng liệu trình.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
        Section Quy trình khám
        ========================================================================== -->
   <section class="section section-bg" id="timeline">
@@ -609,6 +605,10 @@
 
       <div class="ba-viewer reveal reveal-zoom-in">
         <!-- Category Sidebar -->
+        <div class="ba-category-col">
+        <button type="button" class="ba-category-scroll-btn ba-category-scroll-prev" id="ba-category-prev" aria-label="Xem liệu trình trước">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
         <div class="ba-category-list" id="ba-category-list">
           <button type="button" class="ba-category-btn is-active"
             data-chip="Cải thiện 92% · Sau 8 tuần"
@@ -652,6 +652,10 @@
             data-customer="Khách hàng: Đức Anh (32 tuổi)"
             data-condition="Bệnh lý: Nám mảng lớn hai bên gò má kết hợp tàn nhang sắc tố lâu năm."
             data-quote="Tàn nhang mờ đi nhiều, da sáng và đều màu hơn, đúng như cam kết của phòng khám.">Nám Mảng Lớn</button>
+        </div>
+        <button type="button" class="ba-category-scroll-btn ba-category-scroll-next" id="ba-category-next" aria-label="Xem liệu trình tiếp theo">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
         </div>
 
         <!-- Large Comparison Panel -->
@@ -707,7 +711,14 @@
       </div>
 
       <!-- Carousel Container -->
-      <div class="reviews-carousel-container reveal reveal-zoom-in swiper" id="reviews-swiper">
+      <div class="reviews-carousel-outer reveal reveal-zoom-in">
+        <button type="button" class="carousel-nav-arrow carousel-nav-prev" id="reviews-swiper-prev" aria-label="Đánh giá trước">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <button type="button" class="carousel-nav-arrow carousel-nav-next" id="reviews-swiper-next" aria-label="Đánh giá tiếp theo">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        <div class="reviews-carousel-container swiper" id="reviews-swiper">
         <div class="reviews-carousel-track swiper-wrapper" id="reviews-track">
           <!-- Card 1 -->
           <div class="review-card swiper-slide">
@@ -806,6 +817,7 @@
         <!-- Carousel Indicators -->
         <div class="carousel-indicators swiper-pagination" id="carousel-indicators">
           <!-- Swiper will insert pagination bullets -->
+        </div>
         </div>
       </div>
     </div>

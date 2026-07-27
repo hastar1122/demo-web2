@@ -94,7 +94,7 @@
        ========================================================================== -->
   <section class="page-header-section">
     <div class="container">
-      <div class="page-header-content reveal reveal-fade-up">
+      <div class="page-header-content page-header-content--fit reveal reveal-fade-up">
         <span class="badge">Dịch vụ của chúng tôi</span>
         <h1>Danh Mục Điều Trị <span>Chuyên Sâu</span></h1>
         <p>Phác đồ toàn diện được cá nhân hóa cho từng bệnh lý và vấn đề da liễu thường gặp, thực hiện bởi bác sĩ chuyên khoa da liễu</p>
@@ -263,6 +263,89 @@
       <span class="float-tooltip">Lên đầu trang</span>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
     </button>
+  </div>
+
+  <!-- ==========================================================================
+       Booking Modal (opens from any "Đặt lịch" / "Nhận tư vấn" trigger site-wide -
+       duplicated on every page, same IDs as index.html, so the trigger click
+       handler in script.js opens it in place instead of navigating away)
+       ========================================================================== -->
+  <div class="booking-modal" id="booking-card">
+    <div class="booking-modal-overlay" data-booking-close></div>
+    <div class="booking-modal-inner">
+      <button type="button" class="booking-modal-close" id="booking-modal-close-btn" aria-label="Đóng">&times;</button>
+      <div class="booking-card">
+        <!-- Booking Form -->
+        <div class="booking-form-wrapper">
+          <h3>Đặt Lịch Hẹn</h3>
+          <p class="booking-card-desc">Đăng ký tư vấn miễn phí cùng bác sĩ da liễu</p>
+          <form id="hero-booking-form" class="booking-form" action="#" method="POST">
+            <div class="form-group">
+              <label for="booking-name">Họ và tên *</label>
+              <div class="form-control-wrap">
+                <svg class="form-control-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <input type="text" id="booking-name" class="form-control" placeholder="Nguyễn Văn A" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="booking-phone">Số điện thoại *</label>
+              <div class="form-control-wrap">
+                <svg class="form-control-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                <input type="tel" id="booking-phone" class="form-control" placeholder="0901234567" required pattern="[0-9]{10}">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="booking-service">Dịch vụ quan tâm</label>
+              <div class="form-control-wrap">
+                <svg class="form-control-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                <select id="booking-service" class="form-control">
+                  <option value="Trị mụn chuẩn y khoa">Điều trị mụn chuẩn y khoa</option>
+                  <option value="Trẻ hóa da công nghệ cao">Trẻ hóa da công nghệ cao</option>
+                  <option value="Trị nám, tàn nhang Laser">Trị nám, tàn nhang Laser</option>
+                  <option value="Chăm sóc da chuyên sâu">Chăm sóc da chuyên sâu</option>
+                  <option value="Nâng cơ trẻ hóa Hifu">Nâng cơ trẻ hóa Hifu</option>
+                  <option value="Điều trị sẹo rỗ chuyên sâu">Điều trị sẹo rỗ chuyên sâu</option>
+                  <option value="Triệt lông vĩnh viễn Diode">Triệt lông vĩnh viễn Diode</option>
+                  <option value="Điều trị viêm da cơ địa">Điều trị viêm da cơ địa</option>
+                  <option value="Tiêm Botox">Tiêm Botox</option>
+                  <option value="Xóa nhăn">Xóa nhăn</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="booking-date">Ngày khám mong muốn *</label>
+              <div class="form-control-wrap">
+                <svg class="form-control-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                <input type="date" id="booking-date" class="form-control" required>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-ripple" style="margin-top: 0.5rem; width: 100%;">
+              Gửi Yêu Cầu Đặt Lịch
+            </button>
+            <p class="booking-privacy-note">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              Thông tin của bạn được bảo mật tuyệt đối.
+            </p>
+          </form>
+        </div>
+
+        <!-- Success Alert Card -->
+        <div class="booking-success" id="booking-success-card">
+          <div class="booking-success-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+          </div>
+          <h3>Đặt Lịch Thành Công!</h3>
+          <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.5rem;">
+            Cảm ơn bạn đã lựa chọn Phòng Khám Da Liễu Bác Sĩ Tân. Nhân viên tư vấn của chúng tôi sẽ liên hệ xác nhận cuộc hẹn trong vòng 15 phút.
+          </p>
+          <button type="button" class="btn btn-secondary btn-ripple" id="booking-reset-btn" style="margin-top: 1.5rem; width: 100%;">
+            Đặt lại lịch khác
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- JavaScript Files -->

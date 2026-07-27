@@ -4,7 +4,7 @@
    ========================================================================== */
 
 /* Google Fonts Import */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap');
 
 /* CSS Variables */
 :root {
@@ -15,6 +15,15 @@
   --secondary-light: #F0FDF4;  /* Light Green background for clean highlights */
   --accent: #EA580C;           /* Warm Orange (Accent from logo face) */
   --accent-light: #FEF3C7;     /* Soft Gold/Amber background */
+
+  /* Premium gold shimmer - a true metallic gold family (not orange/amber)
+     used for the clinic wordmark and the accent word inside headings. Kept
+     as its own scale, distinct from --secondary, because that token reads
+     too orange at display sizes. */
+  --gold-deep: #8B6914;
+  --gold-mid: #C9A227;
+  --gold-bright: #E0B93C;
+  --gold-shimmer: linear-gradient(135deg, var(--gold-deep) 0%, var(--gold-mid) 55%, var(--gold-bright) 100%);
   --bg-primary: #FFF;
   --bg-secondary: #F8FAFC;      /* Slate 50 */
   --text-primary: #0F172A;     /* Slate 900 */
@@ -85,6 +94,10 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
   line-height: 1.25;
   color: var(--text-primary);
+
+  /* Evens out line lengths when a heading wraps, instead of leaving a
+     single orphan word stranded alone on the last line. */
+  text-wrap: balance;
 }
 
 h1 {
@@ -153,10 +166,7 @@ img {
 
 .section-header h2 {
   display: inline-block;
-}
-
-.section-header h2 span {
-  color: var(--primary);
+  color: var(--primary-hover); /* single on-brand forest green for the whole heading, never plain black */
 }
 
 .section-header p {
@@ -322,23 +332,31 @@ img {
   flex-direction: column;
   line-height: 1.22;
   white-space: nowrap;
+  padding-left: 0.75rem;
+  border-left: 1.5px solid rgba(201, 162, 39, 0.4); /* thin gold rule separates emblem from wordmark */
 }
 
 .logo-wordmark-line1 {
   font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-  font-weight: 700;
-  font-size: 1.05rem;
-  color: var(--primary);
-  letter-spacing: 0.01em;
+  font-weight: 600;
+  font-size: 0.68rem;
+  color: var(--primary-hover);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
 }
 
+/* Clinic name: a dedicated display serif (distinct from the sans-serif used
+   everywhere else) reads as a proper logotype rather than just bold body
+   text, and title case (not all-caps) suits a serif much better. */
 .logo-wordmark-line2 {
-  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  font-family: 'Playfair Display', 'Plus Jakarta Sans', serif;
   font-weight: 800;
-  font-size: 1.35rem;
-  color: var(--secondary);
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
+  font-size: 1.4rem;
+  background: var(--gold-shimmer);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  letter-spacing: 0.01em;
 }
 
 .logo-text {
@@ -361,7 +379,7 @@ img {
 }
 
 .header-wrapper.is-sticky .logo-wordmark-line1 {
-  font-size: 0.85rem;
+  font-size: 0.6rem;
 }
 
 .header-wrapper.is-sticky .logo-wordmark-line2 {
@@ -689,6 +707,13 @@ img {
   background-color: var(--bg-primary);
 }
 
+/* Mobile-only doctor spotlight card (hidden on desktop - see @media 768px
+   below for the visible layout). Bridges the shrunken mobile banner and the
+   CTA bar with an explicit trust signal (face + credentials + rating). */
+.hero-doctor-spotlight {
+  display: none;
+}
+
 /* CTA strip directly under the banner slider - kept light so it doesn't
    visually merge into the dark green Stats section right below it. */
 .hero-cta-bar {
@@ -954,6 +979,18 @@ input[type="date"].form-control::-webkit-date-and-time-value {
   align-items: center;
 }
 
+/* Above the breakpoint where this column becomes a fixed two-up grid (see
+   @media 1024px below, where it drops to a single column), the heading's
+   fluid font-size (clamp, tied to viewport width) always leaves enough
+   room in the column for it to fit on one line - confirmed by measurement
+   from 1025px up to very wide desktops - so keep it on one line instead of
+   wrapping to an unnecessary second line. */
+@media (min-width: 1025px) {
+  .about-content h2 {
+    white-space: nowrap;
+  }
+}
+
 .about-images-wrapper {
   position: relative;
 }
@@ -1005,64 +1042,6 @@ input[type="date"].form-control::-webkit-date-and-time-value {
 .badge-text-desc {
   font-size: 0.75rem;
   color: var(--text-secondary);
-}
-
-/* ==========================================================================
-   Trust Bar Section (uy tín, directly under Hero)
-   ========================================================================== */
-.trust-bar-section {
-  position: relative;
-  z-index: 3;
-  padding: 4rem 0 4.5rem 0;
-}
-
-.trust-bar-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.5rem;
-}
-
-.trust-card {
-  background-color: var(--bg-primary);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 2rem 1.75rem;
-  box-shadow: var(--shadow-md);
-  transition: all var(--transition-normal);
-}
-
-.trust-card:hover {
-  transform: translateY(-6px);
-  border-color: var(--primary);
-  box-shadow: var(--shadow-lg);
-}
-
-.trust-icon-wrapper {
-  width: 64px;
-  height: 64px;
-  background-color: var(--secondary-light);
-  color: var(--primary);
-  border-radius: var(--radius-md);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 1.25rem;
-  transition: var(--transition-normal);
-}
-
-.trust-card:hover .trust-icon-wrapper {
-  background-color: var(--primary);
-  color: var(--bg-primary);
-  transform: scale(1.05);
-}
-
-.trust-card h4 {
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-}
-
-.trust-card p {
-  font-size: 0.9rem;
 }
 
 /* ==========================================================================
@@ -1131,12 +1110,71 @@ input[type="date"].form-control::-webkit-date-and-time-value {
   gap: 1.75rem;
 }
 
-.services-carousel-container {
+/* Side gutters reserve room for the prev/next arrows so they sit outside
+   the cards instead of overlapping them. This padding lives on the OUTER
+   wrapper, never on the Swiper root itself (.services-carousel-container /
+   .reviews-carousel-container below) - Swiper sizes slides from its root
+   element's own width, so padding there would let slides render underneath
+   it and peek out past the arrows. Keeping the Swiper root unpadded, with
+   its own overflow:hidden, clips slides exactly at the visible edge with
+   no peek. Shared by both the services and reviews carousels. */
+.services-carousel-outer,
+.reviews-carousel-outer {
   position: relative;
+  padding: 1rem 2.75rem;
+}
+
+.services-carousel-container,
+.reviews-carousel-container {
   width: 100%;
   overflow: hidden;
-  padding: 1rem 0;
 }
+
+/* Prev/next affordance for the services/reviews carousels - sits level with
+   the card row itself (same treatment as the hero slider arrows: solid
+   white disc + strong shadow, no border - a thin outline read as flat/
+   cheap) rather than in a separate row below. Parked in the outer
+   wrapper's side gutters, hugging the outer edge, so it never overlaps the
+   cards but also doesn't leave a big empty gap between itself and the card
+   next to it. */
+.carousel-nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: var(--bg-primary);
+  color: var(--primary);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--shadow-lg);
+  transition: var(--transition-fast);
+}
+
+.carousel-nav-arrow svg {
+  width: 18px;
+  height: 18px;
+}
+
+.carousel-nav-arrow:hover {
+  background-color: var(--primary);
+  color: var(--bg-primary);
+  transform: translateY(-50%) scale(1.08);
+}
+
+.carousel-nav-arrow.swiper-button-disabled {
+  opacity: 0.35;
+  cursor: default;
+  pointer-events: none;
+}
+
+.carousel-nav-prev { left: 0.3rem; }
+.carousel-nav-next { right: 0.3rem; }
 
 /* Layout, drag, spacing and slide sizing are all owned by Swiper (see the
    #services-swiper init in script.js) - .services-carousel-track only needs
@@ -1223,21 +1261,30 @@ input[type="date"].form-control::-webkit-date-and-time-value {
   overflow: hidden;
 }
 
+/* Kept on a single row even on the narrowest cards (nowrap, tighter gap +
+   button padding below) - letting it wrap to two lines read as broken. */
 .service-card-actions {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 1rem 1.25rem;
+  flex-wrap: nowrap;
+  gap: 0.75rem;
+}
+
+.service-card-actions .btn-sm {
+  padding: 0.6rem 1rem;
+  flex-shrink: 0;
 }
 
 .service-link {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.35rem;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: var(--primary);
+  white-space: nowrap;
+  flex-shrink: 0;
   transition: gap var(--transition-fast);
 }
 
@@ -1409,6 +1456,29 @@ input[type="date"].form-control::-webkit-date-and-time-value {
   color: var(--text-secondary);
 }
 
+/* Equipment gallery (Trang thiết bị hiện đại) - reuses .employees-showcase
+   for the shared max-width/centering, but shows a 2x2 grid of photos
+   instead of a single hero image. */
+.equipment-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 1.75rem;
+}
+
+.equipment-gallery img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  transition: transform var(--transition-slow);
+}
+
+.equipment-gallery img:hover {
+  transform: scale(1.03);
+}
+
 /* ==========================================================================
    Quy trình khám Section
    ========================================================================== */
@@ -1498,10 +1568,20 @@ input[type="date"].form-control::-webkit-date-and-time-value {
   min-width: 0; /* Let grid items (esp. the horizontal-scroll mobile category row) shrink below their content's natural width instead of expanding the page */
 }
 
+.ba-category-col {
+  min-width: 0;
+}
+
 .ba-category-list {
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
+}
+
+/* Only meaningful once .ba-category-list becomes a horizontal scroller
+   below (see @media 1024px) - hidden on desktop's vertical sidebar. */
+.ba-category-scroll-btn {
+  display: none;
 }
 
 .ba-category-btn {
@@ -1702,12 +1782,6 @@ input[type="date"].form-control::-webkit-date-and-time-value {
 /* ==========================================================================
    Review Khách hàng Carousel Section
    ========================================================================== */
-.reviews-carousel-container {
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-  padding: 1rem 0;
-}
 
 /* Layout, drag, spacing and slide sizing are all owned by Swiper (see the
    #reviews-swiper init in script.js) - .reviews-carousel-track only needs
@@ -1954,13 +2028,7 @@ input[type="date"].form-control::-webkit-date-and-time-value {
   font-size: clamp(2.2rem, 4.8vw, 4rem);
   margin-bottom: 1rem;
   letter-spacing: -0.02em;
-}
-
-.page-header-content h1 span {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--primary-hover); /* single on-brand forest green for the whole heading, never plain black */
 }
 
 .page-header-content p {
@@ -1968,6 +2036,32 @@ input[type="date"].form-control::-webkit-date-and-time-value {
   line-height: 1.75;
   max-width: 760px;
   margin: 0 auto;
+}
+
+/* --fit: for a page with one fixed, known-short title (e.g. dich-vu.html) -
+   measured to comfortably fit on one line once given a bit more room, so
+   above the breakpoint where the h1's fluid font-size hits its max (4rem)
+   widen the column and lock it to one line instead of wrapping. */
+@media (min-width: 1025px) {
+  .page-header-content--fit {
+    max-width: 960px;
+  }
+
+  .page-header-content--fit h1 {
+    white-space: nowrap;
+  }
+}
+
+/* --wide: for a page whose title is dynamic content (e.g. tin-tuc-chi-tiet.html
+   article titles) - length varies per item and a long one genuinely can't
+   fit on a single line at this font size on any realistic screen, so this
+   only widens the column to cut an unnecessary 3rd line down to a balanced
+   2 (verified against every current article title); it does NOT force
+   nowrap, since a future longer title must still be free to wrap safely. */
+@media (min-width: 1025px) {
+  .page-header-content--wide {
+    max-width: 1100px;
+  }
 }
 
 .news-page-grid {
@@ -2131,6 +2225,75 @@ input[type="date"].form-control::-webkit-date-and-time-value {
 }
 
 /* ==========================================================================
+   News Detail Page (tin-tuc-chi-tiet.html)
+   ========================================================================== */
+.news-detail-meta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+.news-detail-meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.4rem 0.9rem;
+}
+
+.news-detail-meta-item svg {
+  flex-shrink: 0;
+  color: var(--primary);
+}
+
+.news-detail-hero-image {
+  width: 100%;
+  max-height: 480px;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  background-color: var(--bg-secondary);
+  margin-bottom: 3rem;
+}
+
+.news-detail-body {
+  max-width: 780px;
+  margin: 0 auto 4.5rem;
+}
+
+.news-detail-body h2 {
+  font-size: clamp(1.3rem, 2.3vw, 1.6rem);
+  margin: 2.25rem 0 1rem;
+}
+
+.news-detail-body h2:first-child {
+  margin-top: 0;
+}
+
+.news-detail-body p {
+  line-height: 1.85;
+  margin-bottom: 1.25rem;
+}
+
+.news-detail-body p:last-child {
+  margin-bottom: 0;
+}
+
+.news-related-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.75rem;
+}
+
+/* ==========================================================================
    FAQ Section
    ========================================================================== */
 .faq-container {
@@ -2235,6 +2398,21 @@ input[type="date"].form-control::-webkit-date-and-time-value {
   font-weight: 800;
   margin-bottom: 1.25rem;
   color: var(--bg-primary);
+}
+
+/* Both CTA headings that use this section (index.html/tin-tuc.html's
+   "Nhận Tư Vấn..." and dich-vu.html's "Chưa Biết Chọn...") are fixed,
+   known text - measured to need ~890px at this heading's max font-size,
+   so widen the column and lock to one line above the breakpoint where
+   there's room, instead of wrapping unnecessarily. */
+@media (min-width: 1025px) {
+  .cta-container {
+    max-width: 950px;
+  }
+
+  .cta-section h2 {
+    white-space: nowrap;
+  }
 }
 
 .cta-section p {
@@ -2578,10 +2756,6 @@ input[type="date"].form-control::-webkit-date-and-time-value {
     width: 80%;
   }
 
-  .trust-bar-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-
   .services-grid {
     grid-template-columns: 1fr 1fr;
   }
@@ -2608,7 +2782,15 @@ input[type="date"].form-control::-webkit-date-and-time-value {
     grid-template-columns: 1fr;
   }
 
+  .ba-category-col {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
   .ba-category-list {
+    flex: 1;
+    min-width: 0;
     flex-direction: row;
     flex-wrap: nowrap;
     overflow-x: auto;
@@ -2621,6 +2803,30 @@ input[type="date"].form-control::-webkit-date-and-time-value {
     white-space: nowrap;
   }
 
+  /* Explicit prev/next affordance - the horizontal scroll gesture alone
+     isn't discoverable, so surface arrows once the list becomes a row. */
+  .ba-category-scroll-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: var(--bg-primary);
+    color: var(--primary);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition-fast);
+  }
+
+  .ba-category-scroll-btn:hover {
+    background-color: var(--primary);
+    color: var(--bg-primary);
+    border-color: var(--primary);
+  }
+
   .news-grid {
     grid-template-columns: 1fr 1fr;
   }
@@ -2628,6 +2834,10 @@ input[type="date"].form-control::-webkit-date-and-time-value {
   .news-page-grid {
     grid-template-columns: 1fr;
     gap: 1.75rem;
+  }
+
+  .news-related-grid {
+    grid-template-columns: 1fr 1fr;
   }
 
   .footer-grid {
@@ -2695,10 +2905,95 @@ input[type="date"].form-control::-webkit-date-and-time-value {
   .header-right .btn {
     display: none; /* Hide header booking button on tablet/mobile header */
   }
+
+  .hero-doctor-spotlight {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.9rem 1rem;
+    margin: 0.75rem 1rem;
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .hero-doctor-spotlight-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: top center;
+    flex-shrink: 0;
+    border: 2px solid var(--secondary-light);
+  }
+
+  .hero-doctor-spotlight-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .hero-doctor-spotlight-rating {
+    display: flex;
+    align-items: center;
+    color: var(--secondary);
+    gap: 0.1rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .hero-doctor-spotlight-rating span {
+    margin-left: 0.35rem;
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .hero-doctor-spotlight-info h3 {
+    font-size: 0.95rem;
+    margin-bottom: 0.1rem;
+  }
+
+  .hero-doctor-spotlight-info p {
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+    white-space: normal;
+  }
+
+  .hero-doctor-spotlight-link {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: var(--secondary-light);
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition-fast);
+  }
+
+  .hero-doctor-spotlight-link:hover {
+    background-color: var(--primary);
+    color: var(--bg-primary);
+  }
 }
 
 /* Mobile Devices (576px or less) */
 @media (max-width: 576px) {
+  /* The 24px side margin felt heavy on narrow phones - trimmed everywhere
+     (this is the shared .container used across every section). */
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .service-card-body {
+    padding: 1.5rem;
+  }
+
   .header-hotline {
     display: none; /* Hide hotline from header to save space on mobile */
   }
@@ -2723,11 +3018,31 @@ input[type="date"].form-control::-webkit-date-and-time-value {
     height: 16px;
   }
 
-  .trust-bar-grid {
+  /* Narrower gutters on small phones - the cards need the room more than
+     the arrows do here. */
+  .services-carousel-outer,
+  .reviews-carousel-outer {
+    padding: 1rem 2.25rem;
+  }
+
+  .carousel-nav-arrow {
+    width: 30px;
+    height: 30px;
+  }
+
+  .carousel-nav-arrow svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  .carousel-nav-prev { left: 0.2rem; }
+  .carousel-nav-next { right: 0.2rem; }
+
+  .services-grid {
     grid-template-columns: 1fr;
   }
 
-  .services-grid {
+  .news-related-grid {
     grid-template-columns: 1fr;
   }
 

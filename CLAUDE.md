@@ -9,8 +9,10 @@ Static, no-build marketing website (Vietnamese) for a dermatology clinic ("Phòn
 - `index.html` — home page (hero, about, services, doctors, gallery, testimonials, booking, footer)
 - `dich-vu.html` — services listing page
 - `dich-vu-chi-tiet.html` — service detail page; reads a `?slug=` query param and looks it up in `SERVICES_DATA` (requires JS to render — opening it directly without a slug shows placeholder content)
-- `tin-tuc.html` — news/blog page
+- `tin-tuc.html` — news/blog listing page; rendered from `NEWS_DATA` (see `news-data.js`), not hardcoded markup
+- `tin-tuc-chi-tiet.html` — news article detail page; reads a `?slug=` query param and looks it up in `NEWS_DATA` (requires JS to render — opening it directly without a slug falls back to the first article)
 - `services-data.js` — single source of truth (`const SERVICES_DATA = [...]`) consumed by both the services listing and detail pages via slug lookup; add/edit services here, not by duplicating markup
+- `news-data.js` — single source of truth (`const NEWS_DATA = [...]`) consumed by both the news listing and detail pages via slug lookup; add/edit articles here, not by duplicating markup
 - `script.js` — vanilla JS: scroll animations, counters, before/after slider, lightbox, drag/swipe carousel, accordion, booking logic, mobile nav
 - `style.css` — all styling; CSS custom properties defined in `:root` (colors, shadows, radii, transitions)
 
